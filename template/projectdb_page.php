@@ -3,7 +3,6 @@
 $export_json = '';
 $export = array();
 if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
-  echo 'Importing from ' . get_option('projectdb_api_url') . '... ';
   $filters = array(
     'name' => 'venues',
     'op' => 'any',
@@ -22,6 +21,7 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
     . 'results_per_page=300' . '&'
     . 'key=' . get_option('projectdb_api_key');
 
+  echo 'Importing from ' . $projectdb_path . '... ';
   $projectdb_json = file_get_contents($projectdb_path);
   $projectdb = json_decode($projectdb_json, TRUE);
   if (count($projectdb) > 0) {
