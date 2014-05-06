@@ -37,7 +37,7 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
         'meta_key' => 'project_id',
         'meta_value' => $p['project_id']
       ));
-      if (count($existing) > 0) {
+/*      if (count($existing) > 0) {
         $post_id = $existing[0];
         echo "updating ";
       }
@@ -51,7 +51,7 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
       }
       else {
         echo 'post ID ' . $post_id . "<br />\n";
-      }
+      } */
     }
   }
   else {
