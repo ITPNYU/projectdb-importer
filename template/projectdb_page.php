@@ -17,7 +17,7 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
     $projectdb_path .= '/';
   }
   $projectdb_path .= 'project?'
-    . $filters . '&'
+    . urlencode(json_encode($filters)) . '&'
     . 'results_per_page=300' . '&'
     . 'key=' . get_option('projectdb_api_key');
 
