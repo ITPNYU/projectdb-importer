@@ -20,7 +20,8 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
     echo ' retrieved ' . count($projectdb['objects']) . ' projects.<br />';
     echo "<ul>\n";
     foreach ($projectdb['objects'] as $p) {
-      echo '<li>' . $p['project']['project_name'] . "</li>\n";
+      echo '<li>' . $p['project']['project_name'] . ' - ' 
+        . $p['project']['elevator_pitch'] . "</li>\n";
     }
     echo "</ul>\n";
 
