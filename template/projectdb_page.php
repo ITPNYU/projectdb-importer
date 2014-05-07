@@ -16,10 +16,10 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
   echo 'Importing from ' . $projectdb_path . '... ';
   $projectdb_json = file_get_contents($projectdb_path);
   $projectdb = json_decode($projectdb_json, TRUE);
-  if (count($projectdb) > 0) {
-    echo ' retrieved ' . count($projectdb) . ' projects.<br />';
+  if (count($projectdb['objects']) > 0) {
+    echo ' retrieved ' . count($projectdb['objects']) . ' projects.<br />';
     echo "<ul>\n";
-    foreach ($projectdb as $p) {
+    foreach ($projectdb['objects'] as $p) {
       #echo '<li>' . $p['project_name'] . "</li>\n";
       echo '<li>';
       var_dump($p);
