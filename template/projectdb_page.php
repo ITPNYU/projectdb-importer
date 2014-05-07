@@ -29,7 +29,9 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
     echo "<ul>\n";
     foreach ($projectdb as $p) {
       #echo '<li>' . $p['project_name'] . "</li>\n";
-      echo '<li>' . var_dump($p) . "</li>\n";
+      echo '<li>';
+      var_dump($p);
+      echo "</li>\n";
     }
     echo "</ul>\n";
 
