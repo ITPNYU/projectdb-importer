@@ -3,21 +3,13 @@
 $export_json = '';
 $export = array();
 if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
-  $filters = array(
-    'name' => 'venues',
-    'op' => 'any',
-    'value' => array(
-      'name' => 'venue_id',
-      'op' => '==',
-      'value' => get_option('projectdb_venue')
-    ) 
-  );
   $projectdb_path = get_option('projectdb_api_url');
   if (preg_match('/\/$/', $projectdb_path) != 1) {
     $projectdb_path .= '/';
   }
-  $projectdb_path .= 'project?'
-    . urlencode(json_encode($filters)) . '&'
+  $projectdb_path .= 'venue' . '/' . get_option('projectdb_venue')
+    . '/' . 'projects'
+    . '?' . '&'
     . 'results_per_page=300' . '&'
     . 'key=' . get_option('projectdb_api_key');
 
