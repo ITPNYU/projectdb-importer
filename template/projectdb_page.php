@@ -13,7 +13,7 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
 #    . 'results_per_page=300' . '&'
 #    . 'key=' . get_option('projectdb_api_key');
 
-  $filters = array('filters' => array( 'name' => 'venues', 'op' => 'in', 'val' => 100 ) );
+  $filters = array('filters' => array( 'name' => 'venues__id', 'op' => 'eq', 'val' => 100 ) );
 
   $projectdb_path .= 'project'
     . '?'
