@@ -80,9 +80,9 @@ function projectdb_post($project) {
     #$cat_list = wp_get_post_categories($post_id);
   }
 
-
-  $class_cat = projectdb_category(array('name' => 'Related Classes', 'parent' => 'class'));
-  $instructor_cat = projectdb_category(array('name' => 'Instructor', 'parent' => 'instructor'));
+  $projects_cat = projectdb_category(array('name' => 'Projects', 'slug' => 'projects'));
+  $class_cat = projectdb_category(array('name' => 'Related Classes', 'slug' => 'class'));
+  $instructor_cat = projectdb_category(array('name' => 'Instructor', 'slug' => 'instructor'));
   foreach ($project['classes'] as $c) {
     $cat = projectdb_category(array(
       'name' => $c['class_name'],
@@ -96,7 +96,10 @@ function projectdb_post($project) {
     array_push($cat_list, $cat);
   }
 
-  $student_cat = projectdb_category(array('name' => 'Student', 'parent' => 'student'));
+  $student_cat = projectdb_category(array(
+    'name' => 'Student',
+    'slug' => 'student'
+  ));
   foreach ($project['people'] as $p) {
     $cat = projectdb_category(array(
       'name' => $p['netid'],
@@ -109,7 +112,7 @@ function projectdb_post($project) {
     'post_title' => $project['project_name'],
     'post_status' => 'publish',
     'post_content' => projectdb_format_content($p),
-    'post_category' => $projectdb_cat_list
+    'post_category' => $cat_list
   );
 
   if (isset($post_id)) {
