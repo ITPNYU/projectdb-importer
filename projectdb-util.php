@@ -81,6 +81,7 @@ function projectdb_post($project) {
   }
 
   $projects_cat = projectdb_category(array('name' => 'Projects', 'slug' => 'projects'));
+  array_push($cat_list, $projects_cat);
   $class_cat = projectdb_category(array('name' => 'Related Classes', 'slug' => 'class'));
   $instructor_cat = projectdb_category(array('name' => 'Instructor', 'slug' => 'instructor'));
   foreach ($project['classes'] as $c) {
@@ -117,6 +118,7 @@ function projectdb_post($project) {
 
   if (isset($post_id)) {
     $post_args['ID'] = $post_id->ID;
+    echo 'updating post ' . $post_id . "<br />\n";
     $post_id = wp_update_post($post_args);
   }
   else {
