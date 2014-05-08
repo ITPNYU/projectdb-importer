@@ -13,11 +13,16 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
 #    . 'results_per_page=300' . '&'
 #    . 'key=' . get_option('projectdb_api_key');
 
-  $filters = array('filters' => array(
-    'name' => 'venues', 'op' => 'any', 'val' => array(
-      'name' => 'venue_id', 'op' => 'eq', 'val' => 100
+  # q={"filters":[{"name":"venues__venue_id","op":"any","val":100}]}
+  $filters = array(
+    array(
+      'filters' => array(
+        'name' => 'venues__venues_id',
+        'op' => 'any',
+        'val' => 100
+      )
     )
-  ));
+  );
 
   $projectdb_path .= 'project'
     . '?'
