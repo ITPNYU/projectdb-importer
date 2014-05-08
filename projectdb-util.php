@@ -1,5 +1,34 @@
 <?php
 
+function projectdb_download($args) {
+  $projectdb = NULL;
+  if ($args['url'] && $args['key']) {
+    $url = $args['url'];
+    if (preg_match('/\/$/', $url) != 1) {
+      $url .= '/';
+    }
+    # q={"filters":[{"name":"venues__venue_id","op":"any","val":100}]}
+    $filters = array(
+      'filters' => array(
+        array(
+          'name' => 'venues__venue_id',
+          'op' => 'any',
+          'val' => $args['venue']
+        ) 
+      ) 
+    );
+  
+    $url .= 'project' . '?'
+      . 'q=' . urlencode(json_encode($filters)) . '&'
+      . 'results_per_page=300' . '&'
+      . 'key=' . $args['key'];
+
+    $results_json = file_get_contents($url);
+    $results = json_decode($results_json, TRUE);
+  }
+  return $results;
+}
+
 function projectdb_format_content($project) {
   $students = 'names here';
   $post_content = '<h2><em>' . $students . "</em></h2>\n" 
@@ -39,34 +68,47 @@ function projectdb_category($args) { #name, $slug = NULL, $parent = NULL) {
   return $projectdb_cat_id;
 }
 
-function projectdb_post($project, $post_id = NULL) {
-  $projectdb_cat_list = NULL;
+function projectdb_post($project) {
+  $post_id = NULL;
+  $cat_list = NULL;
+  $existing = get_posts(array(
+    'meta_key' => 'project_id',
+    'meta_value' => $p['project_id']
+  ));
+  if (count($existing) > 0) {
+    $post_id = $existing[0]->ID;
+    #$cat_list = wp_get_post_categories($post_id);
+  }
+
 
   $class_cat = projectdb_category('Related Classes', 'class');
   $instructor_cat = projectdb_category('Instructor', 'instructor');
   foreach ($project['classes'] as $c) {
-    projectdb_category(array(
+    $cat = projectdb_category(array(
       'name' => $c['class_name'],
       'parent' => $class_cat
     ));
-    projectdb_category(array(
+    array_push($cat_list, $cat);
+    $cat = projectdb_category(array(
       'name' => $c['instructor'],
       'parent' => $instructor_cat
     ));
+    array_push($cat_list, $cat);
   }
 
   $student_cat = projectdb_category('Student', 'student');
   foreach ($project['people'] as $p) {
-    projectdb_category(array(
+    $cat = projectdb_category(array(
       'name' => $p['netid'],
       'parent' => $student_cat
     ));
+    array_push($cat_list, $cat);
   }
 
   $post_args = array(
     'post_title' => $project['project_name'],
     'post_status' => 'publish',
-    'post_content' => projectdb_format_content($s),
+    'post_content' => projectdb_format_content($p),
     'post_category' => $projectdb_cat_list
   );
 
