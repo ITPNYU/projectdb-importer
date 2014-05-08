@@ -94,8 +94,9 @@ function projectdb_post($project) {
       'url' => get_option('itpdir_api_url'),
       'key' => get_option('itpdir_api_key')
     ));
+    $name = $person['objects'][0]['preferred_firstname'] . ' ' . $person['preferred_lastname'];
     $cat = projectdb_category(array(
-      'name' => $person['preferred_firstname'] . ' ' . $person['preferred_lastname'],
+      'name' => $name,
       'parent' => $instructor_cat
     ));
     array_push($cat_list, $cat);
@@ -111,8 +112,9 @@ function projectdb_post($project) {
       'url' => get_option('itpdir_api_url'),
       'key' => get_option('itpdir_api_key')
     ));
+    $name = $person['objects'][0]['preferred_firstname'] . ' ' . $person['preferred_lastname'];
     $cat = projectdb_category(array(
-      'name' => $person['preferred_firstname'] . ' ' . $person['preferred_lastname'],
+      'name' => $name,
       'parent' => $student_cat
     ));
     array_push($cat_list, $cat);
