@@ -21,7 +21,12 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
     echo "<ul>\n";
     foreach ($projectdb['objects'] as $p) {
       echo '<li>' . $p['project']['project_name'] . ' - ' 
-        . $p['project']['elevator_pitch'] . "</li>\n";
+        . $p['project']['elevator_pitch'];
+      echo "<ul>Students\n"; 
+        foreach ($projectdb['students'] as $s) {
+          echo '<li>' . $s['netid'] . "</li>\n";
+        }
+      echo "</li>\n";
     }
     echo "</ul>\n";
 
