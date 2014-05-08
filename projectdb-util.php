@@ -45,10 +45,11 @@ function projectdb_format_content($project) {
 function projectdb_category($args) {
   $projectdb_cat_id = NULL;
   $cat_args = array(
-    'cat_name' => $args['name'],
-    'category_parent' => $args['parent']
+    'cat_name' => $args['name']
   );
-
+  if (isset($args['parent'])) {
+    $cat_args['category_parent'] = $args['parent'];
+  }
   if (!isset($args['slug'])) {
     $args['slug'] = sanitize_title($args['name']);
   }
@@ -64,7 +65,6 @@ function projectdb_category($args) {
 
   # TODO: does this clobber stuff like the category description?
   $projectdb_cat_id = wp_insert_category($cat_args);
-    
   return $projectdb_cat_id;
 }
 
@@ -75,7 +75,7 @@ function projectdb_post($project) {
     'meta_key' => 'project_id',
     'meta_value' => $project['project_id']
   ));
-  if (count($existing) > 0) {
+  if ((count($existing) > 0) && ($project['project_id'] == get_post_meta($existing[0]->ID, 'project_id'))) {
     $post_id = $existing[0]->ID;
     #$cat_list = wp_get_post_categories($post_id);
   }
