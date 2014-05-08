@@ -131,4 +131,31 @@ function projectdb_post($project) {
   return $post_id;
 }
 
+function itpdir_lookup($args) {
+  $results = NULL;
+  if (isset($args['netid'])) {
+    $url = $args['url'];
+    if (preg_match('/\/$/', $url) != 1) {
+      $url .= '/';
+    }
+    $filters = array(
+      'filters' => array(
+        array(
+          'name' => 'netid',
+          'op' => 'eq',
+          'val' => $args['netid']
+        )
+      )
+    );
+    $url .= 'person' . '?'
+      . 'q=' . urlencode(json_encode($filters)) . '&'
+      . 'results_per_page=300' . '&'
+      . 'key=' . $args['key'];
+ 
+    $results_json = file_get_contents($url);
+    $results = json_decode($results_json, TRUE);
+  }
+  return $results;
+}
+
 ?>

@@ -25,6 +25,10 @@ function projectdb_page() {
 
 function projectdb_setup() {
   add_option('projectdb_api_url');
+  add_option('projectdb_api_key');
+  add_option('projectdb_venue');
+  add_option('itpdir_api_url');
+  add_option('itpdir_api_key');
 }
 
 function projectdb_setting_callback($arg) {
@@ -64,7 +68,26 @@ function projectdb_settings() {
     array('projectdb_venue')
   );
 
+  add_settings_field('itpdir_api_url',
+    'ITPDir API URL',
+    'projectdb_setting_callback',
+    'general',
+    'projectdb_section',
+    array('itpdir_api_url')
+  );
+
+  add_settings_field('itpdir_api_key',
+    'ITPDir API Key',
+    'projectdb_setting_callback',
+    'general',
+    'projectdb_section',
+    array('itpdir_api_key')
+  );
+
   register_setting('general', 'projectdb_api_url');
   register_setting('general', 'projectdb_api_key');
   register_setting('general', 'projectdb_venue');
+
+  register_setting('general', 'itpdir_api_url');
+  register_setting('general', 'itp_api_key');
 }
