@@ -89,8 +89,13 @@ function projectdb_post($project) {
       'parent' => $class_cat
     ));
     array_push($cat_list, $cat);
+    $person = itpdir_lookup(array(
+      'netid' => $c['instructor_id'],
+      'url' => get_option('itpdir_api_url'),
+      'key' => get_option('itpdir_api_key')
+    ));
     $cat = projectdb_category(array(
-      'name' => $c['instructor'],
+      'name' => $person['preferred_firstname'] . ' ' . $person['preferred_lastname'],
       'parent' => $instructor_cat
     ));
     array_push($cat_list, $cat);
@@ -101,8 +106,13 @@ function projectdb_post($project) {
     'slug' => 'student'
   ));
   foreach ($project['people'] as $p) {
+    $person = itpdir_lookup(array(
+      'netid' => $p['netid'],
+      'url' => get_option('itpdir_api_url'),
+      'key' => get_option('itpdir_api_key')
+    ));
     $cat = projectdb_category(array(
-      'name' => $p['netid'],
+      'name' => $person['preferred_firstname'] . ' ' . $person['preferred_lastname'],
       'parent' => $student_cat
     ));
     array_push($cat_list, $cat);
