@@ -70,7 +70,8 @@ function projectdb_category($args) {
 
 function projectdb_post($project) {
   $post_id = NULL;
-  $cat_list = NULL;
+
+  $cat_list = array(projectdb_category(array('name' => 'Projects', 'slug' => 'projects')));
   $existing = get_posts(array(
     'meta_key' => 'project_id',
     'meta_value' => $project['project_id']
@@ -80,8 +81,6 @@ function projectdb_post($project) {
     #$cat_list = wp_get_post_categories($post_id);
   }
 
-  $projects_cat = projectdb_category(array('name' => 'Projects', 'slug' => 'projects'));
-  array_push($cat_list, $projects_cat);
   $class_cat = projectdb_category(array('name' => 'Related Classes', 'slug' => 'class'));
   $instructor_cat = projectdb_category(array('name' => 'Instructor', 'slug' => 'instructor'));
   foreach ($project['classes'] as $c) {
