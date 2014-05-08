@@ -81,8 +81,8 @@ function projectdb_post($project) {
   }
 
 
-  $class_cat = projectdb_category('Related Classes', 'class');
-  $instructor_cat = projectdb_category('Instructor', 'instructor');
+  $class_cat = projectdb_category(array('name' => 'Related Classes', 'parent' => 'class'));
+  $instructor_cat = projectdb_category(array('name' => 'Instructor', 'parent' => 'instructor'));
   foreach ($project['classes'] as $c) {
     $cat = projectdb_category(array(
       'name' => $c['class_name'],
@@ -96,7 +96,7 @@ function projectdb_post($project) {
     array_push($cat_list, $cat);
   }
 
-  $student_cat = projectdb_category('Student', 'student');
+  $student_cat = projectdb_category(array('name' => 'Student', 'parent' => 'student'));
   foreach ($project['people'] as $p) {
     $cat = projectdb_category(array(
       'name' => $p['netid'],
