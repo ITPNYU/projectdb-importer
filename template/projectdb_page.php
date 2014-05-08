@@ -15,7 +15,7 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
 
   $filters = array('filters' => array(
     'name' => 'venues', 'op' => 'any', 'val' => array(
-      'name' => 'id', 'op' => 'eq', 'val' => 100
+      'name' => 'venue_id', 'op' => 'eq', 'val' => 100
     )
   ));
 
