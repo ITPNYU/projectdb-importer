@@ -142,7 +142,9 @@ function projectdb_post($project) {
     $post_id = wp_insert_post($post_args);
   }
 
-  update_post_meta($post_id, 'project_id', $project['project_id']);
+  foreach (array('audience', 'background', 'conclusion', 'personal_statement', 'elevator_pitch', 'user_scenario', 'project_name', 'project_id', 'url') as $meta) {
+    update_post_meta($post_id, $meta, $project[$meta]);
+  }
 
   # media_sideload_image();
 
