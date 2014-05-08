@@ -42,7 +42,7 @@ function projectdb_format_content($project) {
   return $post_content;
 }
 
-function projectdb_category($args) { #name, $slug = NULL, $parent = NULL) {
+function projectdb_category($args) {
   $projectdb_cat_id = NULL;
   $cat_args = array(
     'cat_name' => $args['name'],
@@ -73,7 +73,7 @@ function projectdb_post($project) {
   $cat_list = NULL;
   $existing = get_posts(array(
     'meta_key' => 'project_id',
-    'meta_value' => $p['project_id']
+    'meta_value' => $project['project_id']
   ));
   if (count($existing) > 0) {
     $post_id = $existing[0]->ID;
