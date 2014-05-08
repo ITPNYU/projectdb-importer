@@ -40,7 +40,7 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
       echo '<li>' . $p['project']['project_name'] . ' - ' 
         . $p['project']['elevator_pitch'];
       echo "<ul>Students\n"; 
-        foreach ($projectdb['students'] as $s) {
+        foreach ($projectdb['people'] as $s) {
           echo '<li>' . $s['netid'] . "</li>\n";
         }
       echo "</li>\n";
