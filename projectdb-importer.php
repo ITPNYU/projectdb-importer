@@ -89,5 +89,5 @@ function projectdb_settings() {
   register_setting('general', 'projectdb_venue');
 
   register_setting('general', 'itpdir_api_url');
-  register_setting('general', 'itp_api_key');
+  register_setting('general', 'itpdir_api_key');
 }
