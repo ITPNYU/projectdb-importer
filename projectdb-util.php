@@ -129,7 +129,7 @@ function projectdb_post($project) {
   $post_args = array(
     'post_title' => $project['project_name'],
     'post_status' => 'publish',
-    'post_content' => projectdb_format_content($p),
+    'post_content' => projectdb_format_content($project),
     'post_category' => $cat_list
   );
 
