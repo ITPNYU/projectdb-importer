@@ -15,8 +15,8 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
 
   # q={"filters":[{"name":"venues__venue_id","op":"any","val":100}]}
   $filters = array(
-    array(
-      'filters' => array(
+    'filters' => array(
+      array(
         'name' => 'venues__venues_id',
         'op' => 'any',
         'val' => 100
