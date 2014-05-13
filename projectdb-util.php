@@ -31,7 +31,7 @@ function projectdb_download($args) {
 
 function projectdb_format_content($project) {
   $students = array();
-  foreach ($project.people as $p) {
+  foreach ($project['people'] as $p) {
     array_push($students, $p['preferred_firstname'] . ' ' . $p['preferred_lastname']);
   }
   
