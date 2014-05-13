@@ -51,7 +51,7 @@ function projectdb_format_content($project) {
   }
 
   // image here
-  $post_content .= "[gallery size=\"large\" link=\"file\"]\n";
+  $post_content .= "[gallery size=\"medium\" columns=\"0\" link=\"file\"]\n";
 
   if (isset($project['description'])) {
     $post_content .= "<h3>Description</h3>\n" . htmlspecialchars_decode($project['description']);
