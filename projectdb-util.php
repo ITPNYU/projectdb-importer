@@ -52,6 +52,10 @@ function projectdb_format_content($project) {
 
   // image here
 
+  if (isset($project['description'])) {
+    $post_content .= "<h3>Description</h3>\n" . $project['description'];
+  }
+
   // classes
   $post_content .= "<h3>Classes</h3>\n";
   $classes = array();
@@ -60,9 +64,6 @@ function projectdb_format_content($project) {
   }
   $post_content .= implode(', ', $classes);
 
-  if (isset($project['description'])) {
-    $post_content .= "<h3>Description</h3>\n" . $project['description'];
-  }
   return $post_content;
 }
 
@@ -171,6 +172,12 @@ function projectdb_post($project) {
   }
 
   # media_sideload_image();
+  foreach ($project['documents'] as $d) {
+    if (($d['main_image'] == true) && ($d['secret'] == false)) {
+      $base = 'https://itp.nyu.edu/projects_documents/';
+      media_sideload_image($base . $d['document'], $post_id, $d['document_name']);
+    }
+  }
 
   return $post_id;
 }
