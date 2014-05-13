@@ -53,7 +53,7 @@ function projectdb_format_content($project) {
   // image here
 
   if (isset($project['description'])) {
-    $post_content .= "<h3>Description</h3>\n" . $project['description'];
+    $post_content .= "<h3>Description</h3>\n" . urldecode($project['description']);
   }
 
   // classes
