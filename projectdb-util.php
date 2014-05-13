@@ -54,7 +54,7 @@ function projectdb_format_content($project) {
   $post_content .= "[gallery]\n";
 
   if (isset($project['description'])) {
-    $post_content .= "<h3>Description</h3>\n" . urldecode($project['description']);
+    $post_content .= "<h3>Description</h3>\n" . htmlspecialchars_decode($project['description']);
   }
 
   // classes
