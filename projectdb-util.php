@@ -30,8 +30,12 @@ function projectdb_download($args) {
 }
 
 function projectdb_format_content($project) {
-  $students = 'names here';
-  $post_content = '<h2><em>' . $students . "</em></h2>\n" 
+  $students = array();
+  foreach ($project.people as $p) {
+    array_push($students, $p['preferred_firstname'] . ' ' . $p['preferred_lastname']);
+  }
+  
+  $post_content = '<h2><em>' . implode(', ', $students) . "</em></h2>\n" 
     . $project['elevator_pitch'];
   if (isset($project['url']) && filter_var($project['url'], FILTER_VALIDATE_URL)) {
     $post_content .= '<a href="' . $project['url'] . '">' . $project['url']. "</a><br />\n";
