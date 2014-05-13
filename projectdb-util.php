@@ -44,10 +44,10 @@ function projectdb_format_content($project) {
     }
   }
   
-  $post_content = '<h2><em>' . implode(', ', $students) . "</em></h2>\n" 
-    . $project['elevator_pitch'];
+  $post_content = '<h2><em>' . implode(', ', $students) . "</em></h2>\n";
+  $post_content .= $project['elevator_pitch'] . "\n";
   if (isset($project['url']) && filter_var($project['url'], FILTER_VALIDATE_URL)) {
-    $post_content .= '<p><a href="' . $project['url'] . '">' . $project['url']. "</a></p>\n";
+    $post_content .= '<a href="' . $project['url'] . '">' . $project['url']. "</a>\n";
   }
   if (isset($project['description'])) {
     $post_content .= "<h3>Description</h3>\n" . $project['description'];
@@ -89,7 +89,7 @@ function projectdb_post($project) {
     'meta_key' => 'project_id',
     'meta_value' => $project['project_id']
   ));
-  if ((count($existing) > 0) && ($project['project_id'] == get_post_meta($existing[0]->ID, 'project_id'))) {
+  if ((count($existing) > 0) && ($project['project_id'] == get_post_meta($existing[0]->ID, 'project_id', true))) {
     $post_id = $existing[0]->ID;
     #$cat_list = wp_get_post_categories($post_id);
   }
