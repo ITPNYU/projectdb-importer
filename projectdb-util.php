@@ -174,7 +174,7 @@ function projectdb_post($project) {
   # media_sideload_image();
   foreach ($project['documents'] as $d) {
     if (($d['main_image'] == true) && ($d['secret'] == false)) {
-      $base = 'https://itp.nyu.edu/projects_documents/';
+      $base = 'http://itp.nyu.edu/projects_documents/';
       media_sideload_image($base . $d['document'], $post_id, $d['document_name']);
     }
   }
