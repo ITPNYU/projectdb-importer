@@ -49,6 +49,17 @@ function projectdb_format_content($project) {
   if (isset($project['url']) && filter_var($project['url'], FILTER_VALIDATE_URL)) {
     $post_content .= '<p><a href="' . $project['url'] . '">' . $project['url']. "</a></p>\n";
   }
+
+  // image here
+
+  // classes
+  $post_content .= "<h3>Classes</h3>\n";
+  $classes = array();
+  foreach ($project['classes'] as $c) {
+    array_push($classes, $c['class_name']);
+  }
+  $post_content .= implode(', ', $classes);
+
   if (isset($project['description'])) {
     $post_content .= "<h3>Description</h3>\n" . $project['description'];
   }
