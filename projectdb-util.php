@@ -51,6 +51,7 @@ function projectdb_format_content($project) {
   }
 
   // image here
+  $post_content .= "[gallery]\n";
 
   if (isset($project['description'])) {
     $post_content .= "<h3>Description</h3>\n" . urldecode($project['description']);
@@ -177,6 +178,7 @@ function projectdb_post($project) {
       $base = 'http://itp.nyu.edu/projects_documents/';
       media_sideload_image($base . $d['document'], $post_id, $d['document_name']);
 
+      /*
       $args = array(
         'post_type' => 'attachment',
         'numberposts' => 1,
@@ -185,8 +187,9 @@ function projectdb_post($project) {
       );
       $attachments = get_posts($args);
       if (isset($attachments) && (count($attachments) > 0)) {
+        // if you want to set featured image, this is how:
         update_post_meta($post_id, '_thumbnail_id', $attachments[0]->ID);
-      }
+      }*/
     }
   }
 
