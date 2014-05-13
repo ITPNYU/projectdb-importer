@@ -47,7 +47,7 @@ function projectdb_format_content($project) {
   $post_content = '<h2><em>' . implode(', ', $students) . "</em></h2>\n" 
     . $project['elevator_pitch'];
   if (isset($project['url']) && filter_var($project['url'], FILTER_VALIDATE_URL)) {
-    $post_content .= '<a href="' . $project['url'] . '">' . $project['url']. "</a><br />\n";
+    $post_content .= '<p><a href="' . $project['url'] . '">' . $project['url']. "</a></p>\n";
   }
   if (isset($project['description'])) {
     $post_content .= "<h3>Description</h3>\n" . $project['description'];
