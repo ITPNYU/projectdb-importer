@@ -171,11 +171,22 @@ function projectdb_post($project) {
     update_post_meta($post_id, $meta, $project[$meta]);
   }
 
-  # media_sideload_image();
+  # pull in the image
   foreach ($project['documents'] as $d) {
     if (($d['main_image'] == true) && ($d['secret'] == false)) {
       $base = 'http://itp.nyu.edu/projects_documents/';
       media_sideload_image($base . $d['document'], $post_id, $d['document_name']);
+
+      $args = array(
+        'post_type' => 'attachment',
+        'numberposts' => 1,
+        'post_status' => null,
+        'post_parent' => $post_id
+      );
+      $attachments = get_posts($args);
+      if (isset($attachments) && (count($attachments) > 0)) {
+        update_post_meta($post_id, '_thumbnail_id', $attachments[0]->ID);
+      }
     }
   }
 
