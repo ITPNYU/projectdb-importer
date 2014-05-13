@@ -32,7 +32,16 @@ function projectdb_download($args) {
 function projectdb_format_content($project) {
   $students = array();
   foreach ($project['people'] as $p) {
-    array_push($students, $p['preferred_firstname'] . ' ' . $p['preferred_lastname']);
+    $person = itpdir_lookup(array(
+      'netid' => $p['netid'],
+      'url' => get_option('itpdir_api_url'),
+      'key' => get_option('itpdir_api_key')
+    ));
+    if (isset($person['objects'])) {
+      $person = $person['objects'][0];
+      $name = $person['preferred_firstname'] . ' ' . $person['preferred_lastname'];
+      array_push($students, $name);
+    }
   }
   
   $post_content = '<h2><em>' . implode(', ', $students) . "</em></h2>\n" 
