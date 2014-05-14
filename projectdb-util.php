@@ -96,6 +96,9 @@ function projectdb_category($args) {
 
 function projectdb_post($project) {
   $post_id = NULL;
+  $instructor_meta = NULL;
+  $class_meta = NULL;
+  $student_meta = NULL;
 
   $cat_list = array(projectdb_category(array('name' => 'Projects', 'slug' => 'projects')));
   $existing = get_posts(array(
@@ -115,6 +118,7 @@ function projectdb_post($project) {
       'parent' => $class_cat
     ));
     array_push($cat_list, $cat);
+    array_push($class_meta, $c['class_name']);
     $person = itpdir_lookup(array(
       'netid' => $c['instructor_id'],
       'url' => get_option('itpdir_api_url'),
@@ -128,6 +132,7 @@ function projectdb_post($project) {
         'parent' => $instructor_cat
       ));
       array_push($cat_list, $cat);
+      array_push($instructor_meta, $name);
     }
   }
 
@@ -149,6 +154,7 @@ function projectdb_post($project) {
         'parent' => $student_cat
       ));
       array_push($cat_list, $cat);
+      array_push($student_meta, $name);
     }
   }
 
@@ -171,6 +177,9 @@ function projectdb_post($project) {
   foreach (array('audience', 'background', 'conclusion', 'personal_statement', 'elevator_pitch', 'user_scenario', 'project_name', 'project_id', 'url') as $meta) {
     update_post_meta($post_id, $meta, $project[$meta]);
   }
+  update_post_meta($post_id, 'student', implode(', ', $student_meta));
+  update_post_meta($post_id, 'instructor', implode(', ', $instructor_meta));
+  update_post_meta($post_id, 'class', implode(', ', $class_meta));
 
   # pull in the image
   foreach ($project['documents'] as $d) {
