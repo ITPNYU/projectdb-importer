@@ -20,7 +20,7 @@ function projectdb_download($args) {
   
     $url .= 'project' . '?'
       . 'q=' . urlencode(json_encode($filters)) . '&'
-      . 'results_per_page=300' . '&'
+      . 'max_results_per_page=300' . '&'
       . 'key=' . $args['key'];
 
     $results_json = file_get_contents($url);
