@@ -96,9 +96,9 @@ function projectdb_category($args) {
 
 function projectdb_post($project) {
   $post_id = NULL;
-  $instructor_meta = NULL;
-  $class_meta = NULL;
-  $student_meta = NULL;
+  $instructor_meta = array();
+  $class_meta = array();
+  $student_meta = array();
 
   $cat_list = array(projectdb_category(array('name' => 'Projects', 'slug' => 'projects')));
   $existing = get_posts(array(
