@@ -149,11 +149,11 @@ else {
 ?>
     <div id="wrapper">
       <div id="header1">
-        <img width="100%" src="//itp.nyu.edu/shows/spring2014/files/2014/03/copy-cropped-show-banner.jpg">
+        <img width="100%" src="<? echo get_header_image(); ?>">
       </div><!-- #header1 -->
 
       <div id="title">
-        <p><?php echo get_the_title($post_id) ?></p>
+        <p><?php echo (get_the_title($post_id)); ?></p>
       </div><!-- #title -->
 
       <div id="names">
@@ -177,6 +177,13 @@ $attach = get_posts($args);
         </div><!-- #pitch -->
       </div><!-- #pitch_wrap -->
 
+      <div id="class">
+        <p>Classes: <?php echo (get_post_meta($post_id->ID, 'class', TRUE)); ?></p>
+      </div><!-- #class -->
+
+      <div id="url">
+        <p><?php echo (get_post_meta($post_id->ID, 'url', TRUE)); ?></p>
+      </div><!-- #url -->
 
 <?php
 }
