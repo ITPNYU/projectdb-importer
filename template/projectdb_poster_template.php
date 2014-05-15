@@ -149,7 +149,7 @@ else {
 ?>
     <div id="wrapper">
     <div id="header1">
-    <img src="//itp.nyu.edu/shows/spring2014/files/2014/03/copy-cropped-show-banner.jpg">
+    <img width="50%" src="//itp.nyu.edu/shows/spring2014/files/2014/03/copy-cropped-show-banner.jpg">
     </div><!-- #header -->
     <h1><?php echo get_the_title($post_id) ?></h1>
 <?php
