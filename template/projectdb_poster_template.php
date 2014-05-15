@@ -151,12 +151,31 @@ else {
       <div id="header1">
         <img width="100%" src="//itp.nyu.edu/shows/spring2014/files/2014/03/copy-cropped-show-banner.jpg">
       </div><!-- #header1 -->
+
       <div id="title">
-        <h1><?php echo get_the_title($post_id) ?></h1>
+        <p><?php echo get_the_title($post_id) ?></p>
       </div><!-- #title -->
+
       <div id="names">
         <p><?php echo (get_post_meta($post_id->ID, 'student', TRUE)); ?></p>
       </div><!-- #names -->
+
+      <div id="projectimg">
+<?php
+$args = array(
+  'post_parent' => $post_id,
+  'post_type' => 'attachment'
+);
+$attach = get_posts($args);
+?>
+        <?php echo wp_get_attachment_image($attach[0]->ID, 'medium'); ?>
+      </div><!-- #projectimg -->
+
+      <div id="pitch_wrap">
+        <p><?php echo (get_post_meta($post_id->ID, 'elevator_pitch', TRUE)); ?></p>
+      </div><!-- #pitch_wrap -->
+
+
 <?php
 }
 ?>
