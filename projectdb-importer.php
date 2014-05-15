@@ -15,6 +15,8 @@ register_activation_hook( __FILE__, 'projectdb_setup');
 add_action('admin_init', 'projectdb_settings');
 add_action('admin_menu', 'projectdb_menu');
 
+add_filter('template_redirect', 'projectdb_template_filter');
+
 function projectdb_menu() {
   $page_hook = add_management_page( 'ProjectDB Importer', 'ProjectDB Importer', 'manage_options', 'projectdb-importer', 'projectdb_page');
 }
@@ -90,4 +92,14 @@ function projectdb_settings() {
 
   register_setting('general', 'itpdir_api_url');
   register_setting('general', 'itpdir_api_key');
+}
+
+function projectdb_template_filter() {
+  if (is_page('poster')) {
+    $location = plugin_dir_path(__FILE__) . '/template/' . 'projectdb_poster_template.php';
+    if (file_exists($location)) {
+      load_template($location);
+      exit();
+    }
+  }
 }
