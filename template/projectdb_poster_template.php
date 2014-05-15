@@ -145,7 +145,6 @@ if (!isset($_REQUEST['post'])) {
 }
 else {
   $post_id = get_post($_REQUEST['post']);
-  $custom = get_post_custom($post_id->ID);
   $meta = get_post_meta($post_id->ID);
   //setup_postdata($post_id); // check for null/error
 ?>
@@ -157,7 +156,7 @@ else {
         <h1><?php echo get_the_title($post_id) ?></h1>
       </div><!-- #title -->
       <div id="names">
-        <p><?php var_dump($meta); ?></p>
+        <p><?php echo ($meta->student); ?></p>
       </div><!-- #names -->
 <?php
 }
