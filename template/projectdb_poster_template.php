@@ -145,8 +145,8 @@ if (!isset($_REQUEST['post'])) {
 }
 else {
   $post_id = get_post($_REQUEST['post']);
-  $custom = get_post_custom($post_id);
-  $meta = get_post_meta($post_id);
+  $custom = get_post_custom($post_id->ID);
+  $meta = get_post_meta($post_id->ID);
   //setup_postdata($post_id); // check for null/error
 ?>
     <div id="wrapper">
