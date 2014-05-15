@@ -11,8 +11,10 @@ if (!isset($_REQUEST['post'])) {
 }
 else {
   $post_id = get_post($_REQUEST['post']);
-  setup_postdata($post_id); // check for null/error
-  the_title('<h1>', "</h1\n");
+  //setup_postdata($post_id); // check for null/error
+?>
+    <h1><?php echo get_the_title($post_id) ?></h1>
+<?php
 }
 ?>
 
