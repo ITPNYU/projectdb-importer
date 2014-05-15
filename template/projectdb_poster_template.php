@@ -148,10 +148,15 @@ else {
   //setup_postdata($post_id); // check for null/error
 ?>
     <div id="wrapper">
-    <div id="header1">
-    <img width="100%" src="//itp.nyu.edu/shows/spring2014/files/2014/03/copy-cropped-show-banner.jpg">
-    </div><!-- #header -->
-    <h1><?php echo get_the_title($post_id) ?></h1>
+      <div id="header1">
+        <img width="100%" src="//itp.nyu.edu/shows/spring2014/files/2014/03/copy-cropped-show-banner.jpg">
+      </div><!-- #header1 -->
+      <div id="title">
+        <h1><?php echo get_the_title($post_id) ?></h1>
+      </div><!-- #title -->
+      <div id="names">
+        <p><?php echo get_post_meta($post_id, 'student', TRUE); ?></p>A
+      </div><!-- #names -->
 <?php
 }
 ?>
