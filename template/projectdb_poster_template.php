@@ -156,7 +156,7 @@ else {
         <h1><?php echo get_the_title($post_id) ?></h1>
       </div><!-- #title -->
       <div id="names">
-        <p><?php echo $custom->student; ?></p>
+        <p><?php echo $custom['student']; ?></p>
       </div><!-- #names -->
 <?php
 }
