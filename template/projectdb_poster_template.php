@@ -172,7 +172,9 @@ $attach = get_posts($args);
       </div><!-- #projectimg -->
 
       <div id="pitch_wrap">
-        <p><?php echo (get_post_meta($post_id->ID, 'elevator_pitch', TRUE)); ?></p>
+        <div id="pitch">
+          <p><?php echo (get_post_meta($post_id->ID, 'elevator_pitch', TRUE)); ?></p>
+        </div><!-- #pitch -->
       </div><!-- #pitch_wrap -->
 
 
