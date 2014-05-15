@@ -156,7 +156,7 @@ else {
         <h1><?php echo get_the_title($post_id) ?></h1>
       </div><!-- #title -->
       <div id="names">
-        <p><?php var_dump($meta); ?></p>
+        <p><?php echo ($meta->student[0]); ?></p>
       </div><!-- #names -->
 <?php
 }
