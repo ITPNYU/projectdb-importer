@@ -33,7 +33,7 @@ body{
   /*	border-top:1px solid #000;*/
 }
 
-.header1 {
+.header1{
   float:left;
   width:50%;
   font-size: 30px;      
@@ -148,7 +148,7 @@ else {
   //setup_postdata($post_id); // check for null/error
 ?>
     <div id="wrapper">
-    <div id="header">
+    <div id="header1">
     <img src="//itp.nyu.edu/shows/spring2014/files/2014/03/copy-cropped-show-banner.jpg">
     </div><!-- #header -->
     <h1><?php echo get_the_title($post_id) ?></h1>
