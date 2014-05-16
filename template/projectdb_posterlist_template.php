@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
+<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   </head>
   <body>
 <?php
@@ -9,7 +13,7 @@ $posts = get_posts(array('numberposts' => -1));
 <h1>links to poster and webpage for each project</h1>
 <?php echo count($posts); ?> projects found
 <div id="content">
-  <table border="1">
+  <table class="table table-striped">
     <tr>
       <th>project title</th>
       <th style='text-align:right'>links to:</th>
