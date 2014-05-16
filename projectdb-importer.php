@@ -95,7 +95,7 @@ function projectdb_settings() {
 }
 
 function projectdb_template_filter() {
-  if (is_page('poster')) {
+  if (is_page('posterprint')) {
     $location = plugin_dir_path(__FILE__) . '/template/' . 'projectdb_poster_template.php';
     if (file_exists($location)) {
       load_template($location);
