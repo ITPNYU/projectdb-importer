@@ -164,6 +164,8 @@ else {
 <?php
 $args = array(
   'post_parent' => $post_id,
+  'numberposts' => 1,
+  'post_status' => 'any',
   'post_type' => 'attachment'
 );
 $attach = get_posts($args);
