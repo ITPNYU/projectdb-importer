@@ -13,6 +13,8 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
     foreach ($all_posts as $p) {
       array_push($all_posts_id, get_post_meta($p->ID, 'project_id', TRUE));
     }
+    echo "all_posts_id: ";
+    var_dump($all_posts_id);
     echo "<ul>\n";
     foreach ($projectdb['objects'] as $p) {
       if (!in_array($p['project_id'], $all_posts_id)) {
@@ -34,7 +36,7 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
         else {
           echo 'post deletion: ';
         }
-        echo $p->ID . ' for project ' . $p['project_id'] . "\n";
+        echo $p->ID . ' for project ' . $p['project_id'] . "<br />\n";
       }
       else {
         $post_id = projectdb_post($p);
