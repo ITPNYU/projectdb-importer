@@ -168,6 +168,17 @@ function projectdb_post($project) {
   if (isset($post_id)) {
     $post_args['ID'] = $post_id;
     echo 'updating post ' . $post_id . ': ' . $post_id->post_title .  "<br />\n";
+    $attach = get_posts(array('post_type' => 'attachment', 'post_parent' => $post_id));
+    foreach ($attach as $a) {
+      $ret = wp_delete_attachment($a->ID, TRUE);
+      if ($ret) {
+        echo 'attachment deleted: ';
+      }
+      else {
+        echo 'attachment deletion failure: ';
+      }
+      echo $post_id . "\n";
+    }
     $post_id = wp_update_post($post_args);
   }
   else {
