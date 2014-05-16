@@ -169,6 +169,7 @@ $args = array(
   'post_type' => 'attachment'
 );
 $attach = get_posts($args);
+var_dump($attach);
 ?>
         <?php echo wp_get_attachment_image($attach[0]->ID, 'medium'); ?>
       </div><!-- #projectimg -->
