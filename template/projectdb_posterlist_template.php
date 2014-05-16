@@ -35,11 +35,11 @@ foreach ($posts as $p) {
     }
   }
   // check for empty URL
-  if (!array_contains($missing, 'url')) {
+/*  if (!array_contains($missing, 'url')) {
     if (!FILTER_VALIDATE_URL(get_post_meta($p->ID, 'url', TRUE))) {
       array_push($missing, 'url');
     }
-  }
+  }*/
   // check for image attachment
   $args = array(
     'post_parent' => $p->ID,
