@@ -102,4 +102,11 @@ function projectdb_template_filter() {
       exit();
     }
   }
+  else if (is_page('posterlist')) {
+    $location = plugin_dir_path(__FILE__) . '/template/' . 'projectdb_posterlist_template.php';
+    if (file_exists($location)) {
+      load_template($location);
+      exit();
+    }
+  }
 }
