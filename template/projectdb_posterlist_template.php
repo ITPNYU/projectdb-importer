@@ -30,7 +30,7 @@ foreach ($posts as $p) {
   $missing = array();
   foreach ($fields as $f) {
     $v = get_post_meta($p->ID, $f, TRUE);
-    if (!isset($v)) {
+    if (!isset($v) || ($v == '')) {
       array_push($missing, $f);
     }
   }
