@@ -26,7 +26,7 @@ $posts = get_posts(array('numberposts' => -1));
 foreach ($posts as $p) {
   $posterlink = get_site_url() . '/posterprint?post=' . $p->ID;
   $project_id = get_post_meta($p->ID, 'project_id', TRUE);
-  $fields = array('student', 'instructor', 'class', 'url', 'elevator_pitch', 'description');
+  $fields = array('student', 'instructor', 'class', 'url', 'elevator_pitch');
   $missing = array();
   foreach ($fields as $f) {
     $v = get_post_meta($p->ID, $f, TRUE);
@@ -35,8 +35,22 @@ foreach ($posts as $p) {
     }
   }
   // check for empty URL
+  if (!array_contains($missing, 'url')) {
+    if (!FILTER_VALIDATE_URL(get_post_meta($p->ID, 'url', TRUE))) {
+      array_push($missing, 'url');
+    }
+  }
   // check for image attachment
-
+  $args = array(
+    'post_parent' => $p->ID,
+    'numberposts' => 1,
+    'post_status' => 'any',
+    'post_type' => 'attachment'
+  );
+  $attach = get_posts($args);
+  if (count($attach) != 1) {
+    array_push($missing, 'image');
+  }
 ?>
     <tr>
       <td><?php echo $p->post_title; ?></td>
