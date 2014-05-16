@@ -157,7 +157,7 @@ else {
       </div><!-- #title -->
 
       <div id="names">
-        <p><?php echo (get_post_meta($post_id->ID, 'student', TRUE)); ?></p>
+        <p><?php echo (utf8_decode(get_post_meta($post_id->ID, 'student', TRUE))); ?></p>
       </div><!-- #names -->
 
       <div id="projectimg">
