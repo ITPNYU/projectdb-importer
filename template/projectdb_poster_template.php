@@ -169,14 +169,13 @@ $args = array(
   'post_type' => 'attachment'
 );
 $attach = get_posts($args);
-//var_dump($attach);
 ?>
         <?php echo wp_get_attachment_image($attach[0]->ID, 'medium'); ?>
       </div><!-- #projectimg -->
 
       <div id="pitch_wrap">
         <div id="pitch">
-          <p><?php echo (get_post_meta($post_id->ID, 'elevator_pitch', TRUE)); ?></p>
+          <p><?php echo (htmlspecialchars_decode(get_post_meta($post_id->ID, 'elevator_pitch', TRUE))); ?></p>
         </div><!-- #pitch -->
       </div><!-- #pitch_wrap -->
 
