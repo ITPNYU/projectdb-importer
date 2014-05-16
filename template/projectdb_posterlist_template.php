@@ -35,11 +35,11 @@ foreach ($posts as $p) {
     }
   }
   // check for empty URL
-/*  if (!array_contains($missing, 'url')) {
+  if (!in_array('url', $missing)) {
     if (!FILTER_VALIDATE_URL(get_post_meta($p->ID, 'url', TRUE))) {
       array_push($missing, 'url');
     }
-  }*/
+  }
   // check for image attachment
   $args = array(
     'post_parent' => $p->ID,
@@ -52,7 +52,7 @@ foreach ($posts as $p) {
     array_push($missing, 'image');
   }
 ?>
-    <tr>
+    <tr <?php if (count($missing) > 0) { echo "class=\"warning\""; } ?>>
       <td><?php echo $p->post_title; ?></td>
       <td><a href="<?php echo $posterlink; ?>">poster</a></td>
       <td><a href="/makepdf/?url=<?php echo $posterlink; ?>">PDF</a></td>
