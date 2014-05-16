@@ -39,7 +39,7 @@ function projectdb_format_content($project) {
     ));
     if (isset($person['objects'])) {
       $person = $person['objects'][0];
-      $name = html_entity_decode($person['preferred_firstname'] . ' ' . $person['preferred_lastname']);
+      $name = html_entity_decode($person['preferred_firstname'] . ' ' . $person['preferred_lastname'], NULL, 'UTF-8');
       array_push($students, $name);
     }
   }
