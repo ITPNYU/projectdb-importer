@@ -163,13 +163,13 @@ else {
       <div id="projectimg">
 <?php
 $args = array(
-  'post_parent' => $post_id,
+  'post_parent' => $post_id->ID,
   'numberposts' => 1,
   'post_status' => 'any',
   'post_type' => 'attachment'
 );
 $attach = get_posts($args);
-var_dump($attach);
+//var_dump($attach);
 ?>
         <?php echo wp_get_attachment_image($attach[0]->ID, 'medium'); ?>
       </div><!-- #projectimg -->
