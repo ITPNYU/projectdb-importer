@@ -166,8 +166,8 @@ function projectdb_post($project) {
   );
 
   if (isset($post_id)) {
-    $post_args['ID'] = $post_id->ID;
-    echo 'updating post ' . $post_id->ID . ': ' . $post_id->post_title .  "<br />\n";
+    $post_args['ID'] = $post_id;
+    echo 'updating post ' . $post_id . ': ' . $post_id->post_title .  "<br />\n";
     $post_id = wp_update_post($post_args);
   }
   else {
