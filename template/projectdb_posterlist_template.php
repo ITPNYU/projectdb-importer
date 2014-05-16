@@ -58,7 +58,7 @@ foreach ($posts as $p) {
       <td><a href="<?php echo $posterlink; ?>">poster</a></td>
       <td><a href="/makepdf/?url=<?php echo $posterlink; ?>">PDF</a></td>
       <td><a href="<?php echo get_permalink($p); ?>">project post</a></td>
-      <td><a href="https://itp.nyu.edu/projects/projectinfo.php?project_id=<?php echo project_id; ?>">Edit Project</a></td>
+      <td><a href="https://itp.nyu.edu/projects/projectinfo.php?project_id=<?php echo $project_id; ?>">Edit Project</a></td>
       <td><?php echo implode(', ', $missing); ?></td>
     </tr>
 <?php
