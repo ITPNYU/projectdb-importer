@@ -36,7 +36,8 @@ foreach ($posts as $p) {
   }
   // check for empty URL
   if (!in_array('url', $missing)) {
-    if (!FILTER_VALIDATE_URL(get_post_meta($p->ID, 'url', TRUE))) {
+    $url = get_post_meta($p->ID, 'url', TRUE);
+    if (filter_var($url, FILTER_VALIDATE_URL) !== FALSE) {
       array_push($missing, 'url');
     }
   }
