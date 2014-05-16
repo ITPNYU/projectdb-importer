@@ -179,7 +179,7 @@ function projectdb_post($project) {
       }
       echo $post_id . "\n";
     }
-    $post_id = wp_update_post($post_args);
+    wp_update_post($post_args);
   }
   else {
     $post_id = wp_insert_post($post_args);
