@@ -46,7 +46,7 @@ function projectdb_format_content($project) {
   
   $post_content = '<h2><em>' . implode(', ', $students) . "</em></h2>\n";
   $post_content .= '<p>' . $project['elevator_pitch'] . "</p>\n";
-  if (isset($project['url']) && filter_var($project['url'], FILTER_VALIDATE_URL)) {
+  if (isset($project['url']) && ($project['url'] != '') && ($project['url'] != 'http://')) {
     $post_content .= '<p><a href="' . $project['url'] . '">' . $project['url']. "</a></p>\n";
   }
 
