@@ -184,7 +184,12 @@ $attach = get_posts($args);
       </div><!-- #class -->
 
       <div id="url">
-        <p><?php echo (get_post_meta($post_id->ID, 'url', TRUE)); ?></p>
+        <p><?php 
+$url = get_post_meta($post_id->ID, 'url', TRUE);
+if (!preg_match('/^http:\/\/$/', $url)) {
+  echo $url;
+}
+?></p>
       </div><!-- #url -->
 
 <?php
