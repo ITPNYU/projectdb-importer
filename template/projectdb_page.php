@@ -18,7 +18,6 @@ if (get_option('projectdb_api_url') && get_option('projectdb_api_key')) {
       array_push($all_projects_id, $p['project_id']);
     }
     echo "all_posts_id: ";
-    var_dump($all_posts_id);
     echo "<ul>\n";
     foreach ($projectdb['objects'] as $p) {
       if (!in_array($p['project_id'], $all_projects_id)) {
