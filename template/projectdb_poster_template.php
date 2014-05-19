@@ -160,7 +160,6 @@ else {
         <p><?php echo (get_post_meta($post_id->ID, 'student', TRUE)); ?></p>
       </div><!-- #names -->
 
-      <div id="projectimg">
 <?php
 $args = array(
   'post_parent' => $post_id->ID,
@@ -170,8 +169,18 @@ $args = array(
 );
 $attach = get_posts($args);
 ?>
-        <?php echo wp_get_attachment_image($attach[0]->ID, 'medium'); ?>
+        <?php
+if (count($attach) > 0) {
+  $image = wp_get_attachment_image($attach[0]->ID, 'medium');
+?>
+      <div id="projectimg">
+<?php
+  echo $image;
+?>
       </div><!-- #projectimg -->
+<?php
+}
+?>
 
       <div id="pitch_wrap">
         <div id="pitch">
