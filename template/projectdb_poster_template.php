@@ -83,7 +83,7 @@ body{
 #names	{
   font-size: 18pt; 
   font-weight: bold;
-  color:#088889;
+  color:#86ada0;
   line-height: 30pt;
 } /* NAMES   */
 #names_sm	{
