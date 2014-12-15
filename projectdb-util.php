@@ -14,10 +14,10 @@ function projectdb_download($args) {
           'name' => 'venues__venue_id',
           'op' => 'any',
           'val' => $args['venue']
-        ) 
-      ) 
+        )
+      )
     );
-  
+
     $url .= 'project' . '?'
       . 'q=' . urlencode(json_encode($filters)) . '&'
       . 'results_per_page=300' . '&'
@@ -39,11 +39,14 @@ function projectdb_format_content($project) {
     ));
     if (isset($person['objects'])) {
       $person = $person['objects'][0];
-      $name = html_entity_decode($person['preferred_firstname'] . ' ' . $person['preferred_lastname'], NULL, 'UTF-8');
+      $name = html_entity_decode(
+        utf8_decode($person['preferred_firstname'] . ' ' . $person['preferred_lastname']),
+        NULL, 'UTF-8'
+      );
       array_push($students, $name);
     }
   }
-  
+
   $post_content = '<h2><em>' . implode(', ', $students) . "</em></h2>\n";
   $post_content .= '<p>' . $project['elevator_pitch'] . "</p>\n";
   if (isset($project['url']) && ($project['url'] != '') && ($project['url'] != 'http://')) {
@@ -236,7 +239,7 @@ function itpdir_lookup($args) {
       . 'q=' . urlencode(json_encode($filters)) . '&'
       . 'results_per_page=300' . '&'
       . 'key=' . $args['key'];
- 
+
     $results_json = file_get_contents($url);
     $results = json_decode($results_json, TRUE);
   }
