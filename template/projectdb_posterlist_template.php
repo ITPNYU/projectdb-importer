@@ -54,7 +54,7 @@ foreach ($posts as $p) {
   }
 ?>
     <tr <?php if (count($missing) > 0) { echo "class=\"warning\""; } ?>>
-      <td><?php echo $p->post_title . ' (' . get_post_meta($p->ID, 'student', TRUE) . ')'; ?></td>
+      <td><?php echo utf8_decode($p->post_title) . ' (' . utf8_decode(get_post_meta($p->ID, 'student', TRUE)) . ')'; ?></td>
       <td><a href="<?php echo $posterlink; ?>">poster</a></td>
       <td><a href="/makepdf/?url=<?php echo $posterlink; ?>">PDF</a></td>
       <td><a href="<?php echo get_permalink($p); ?>">project post</a></td>
