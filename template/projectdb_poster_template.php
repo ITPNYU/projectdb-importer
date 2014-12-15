@@ -16,15 +16,15 @@ body{
   font-family: Helvetica;
   font-size: 12pt;
   font-weight:normal;
-  background-color: #fff;	
+  background-color: #fff;
   color: #000;
   text-align: center;
 }
-	
+
 #wrapper {
   padding:0;
   margin:0;
-  width: 6.5in; 
+  width: 6.5in;
   height: 10in;
   margin-top: .5in;
   margin-left: auto;
@@ -36,16 +36,16 @@ body{
 .header1{
   float:left;
   width:50%;
-  font-size: 30px;      
-  font-weight: bold;      
+  font-size: 30px;
+  font-weight: bold;
   letter-spacing: -.25px;
   line-height: 38px;
   text-align:center;
   color: #088889;
   margin:0;
-  padding: 10px 0px 0px 0px;          
+  padding: 10px 0px 0px 0px;
 }
-	
+
 #img1 {
   float:left;
 }
@@ -53,10 +53,10 @@ body{
   float:right;
 }
 #content {
-  clear: both;   
+  clear: both;
   margin:0;
   padding:0;
-  width: 100%; 
+  width: 100%;
   height: 100%;
   vertical-align: text-bottom;
 }
@@ -65,7 +65,7 @@ body{
   width: 95%;
   vertical-align: text-bottom;
   margin: auto;
-  border:1px solid #fff; 
+  border:1px solid #fff;
 }
 
 #content div p {
@@ -75,58 +75,58 @@ body{
   margin-bottom: 2pt;
 }
 
-#title	{	
+#title	{
   font-size: 30pt;
   color:#000;
-} /* TITLE   */ 
+} /* TITLE   */
 
 #names	{
-  font-size: 18pt; 
+  font-size: 18pt;
   font-weight: bold;
   color:#86ada0;
   line-height: 30pt;
 } /* NAMES   */
 #names_sm	{
-  font-size: 16pt; 
+  font-size: 16pt;
   font-weight: bold;
   color:#e32f4a;
   line-height: 18pt;
 } /* NAMES small   */
-	
+
 #projectimg img {
   padding: 5pt;
   border:1pt solid #ccc;
 }
-	
+
 #pitch_wrap {
-  width: 100%; 
+  width: 100%;
 }
 #pitch	{
   padding:0;
   margin:0;
-  width: 90%; 
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
   font-size: 15pt;
   text-align: center;
 } /* PITCH   */
-	
+
 #class	{
   font-size: 12pt;
 } /* CLASSES */
-	
-#url {  
-  color:#088889;     
-  font-size: 14pt; 
+
+#url {
+  color:#088889;
+  font-size: 14pt;
 } /* URL     */
-	
-#spacer {  
+
+#spacer {
   width: 100%;
   margin:0;
   padding: 0;
-  height: 25pt; 
+  height: 25pt;
 } /* space btwn divs     */
-	
+
 @media print {
   #wrapper {
     height: 100% !important;
@@ -136,7 +136,7 @@ body{
 </style>
   </head>
   <body>
-<?php 
+<?php
 $post_id = null;
 if (!isset($_REQUEST['post'])) {
 ?>
@@ -153,11 +153,11 @@ else {
       </div><!-- #header1 -->
 
       <div id="title">
-        <p><?php echo (get_the_title($post_id)); ?></p>
+        <p><?php echo utf8_decode(get_the_title($post_id)); ?></p>
       </div><!-- #title -->
 
       <div id="names">
-        <p><?php echo (get_post_meta($post_id->ID, 'student', TRUE)); ?></p>
+        <p><?php echo utf8_decode(get_post_meta($post_id->ID, 'student', TRUE)); ?></p>
       </div><!-- #names -->
 
 <?php
@@ -193,7 +193,7 @@ if (count($attach) > 0) {
       </div><!-- #class -->
 
       <div id="url">
-        <p><?php 
+        <p><?php
 $url = get_post_meta($post_id->ID, 'url', TRUE);
 if (!preg_match('/^http:\/\/$/', $url)) {
   echo $url;
