@@ -31,12 +31,19 @@ function projectdb_setup() {
   add_option('projectdb_venue');
   add_option('itpdir_api_url');
   add_option('itpdir_api_key');
+  add_option('slug_student_name');
 }
 
 function projectdb_setting_callback($arg) {
   $option_name = $arg[0];
   $option_data = get_option($option_name);
   echo "<input type=\"text\" name=\"$option_name\" value=\"$option_data\" />";
+}
+
+function projectdb_setting_checkbox_callback($arg) {
+  $option_name = $arg[0];
+  $option_data = get_option($option_name);
+  echo "<input type=\"checkbox\" name=\"$option_name\" value=\"$option_data\" />";
 }
 
 function projectdb_settings() {
@@ -86,12 +93,22 @@ function projectdb_settings() {
     array('itpdir_api_key')
   );
 
+  add_settings_field('slug_student_name',
+    'Slug Student Name',
+    'projectdb_setting_checkbox_callback',
+    'general',
+    'projectdb_section',
+    array('slug_student_name')
+  );
+
   register_setting('general', 'projectdb_api_url');
   register_setting('general', 'projectdb_api_key');
   register_setting('general', 'projectdb_venue');
 
   register_setting('general', 'itpdir_api_url');
   register_setting('general', 'itpdir_api_key');
+
+  register_setting('general', 'slug_student_name');
 }
 
 function projectdb_template_filter() {

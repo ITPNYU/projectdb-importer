@@ -168,6 +168,11 @@ function projectdb_post($project) {
     'post_category' => $cat_list
   );
 
+  $slug_student_name = get_option('slug_student_name');
+  if ($slug_student_name === TRUE) {
+    $post_args['post_name'] = sanitize_title($person['preferred_firstname'] . ' ' . $person['preferred_lastname']);
+  }
+
   if (isset($post_id)) {
     $post_args['ID'] = $post_id;
     echo 'updating post ' . $post_id . ': ' . $post_id->post_title .  "<br />\n";
