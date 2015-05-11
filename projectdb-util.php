@@ -169,7 +169,7 @@ function projectdb_post($project) {
   );
 
   $slug_student_name = get_option('slug_student_name');
-  if ($slug_student_name === 1) {
+  if ($slug_student_name === '1') {
     $post_args['post_name'] = sanitize_title($person['preferred_firstname'] . ' ' . $person['preferred_lastname']);
   }
 
