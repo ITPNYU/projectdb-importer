@@ -43,7 +43,7 @@ function projectdb_setting_callback($arg) {
 function projectdb_setting_checkbox_callback($arg) {
   $option_name = $arg[0];
   $option_data = get_option($option_name);
-  echo "<input type=\"checkbox\" name=\"$option_name\" value=\"$option_data\" " .
+  echo "<input type=\"checkbox\" name=\"$option_name\" value=\"1\" " .
     checked(1, $option_data, false) . " />";
 }
 
