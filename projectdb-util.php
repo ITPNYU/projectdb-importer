@@ -61,7 +61,7 @@ function projectdb_format_content($project) {
   }
 
   // classes
-  $post_content .= "<h3>Classes</h3>\n";
+  $post_content .= "\n<h3>Classes</h3>\n";
   $classes = array();
   foreach ($project['classes'] as $c) {
     array_push($classes, $c['class_name']);
