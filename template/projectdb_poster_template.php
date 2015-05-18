@@ -4,16 +4,16 @@
 <style type="text/css" media="print,screen">
 @page {
   size: 8.5in 11in;  /* width height */
-  margin-left: .5in;
-  margin-right: .5in;
-  margin-top: .5in;
-  margin-bottom: .5in;
+  margin-left: .25in;
+  margin-right: .25in;
+  margin-top: .25in;
+  margin-bottom: .25in;
 }
 
 body{
   margin:0;
   padding: 0;
-  font-family: Helvetica;
+  font-family: Lato, sans-serif;
   font-size: 12pt;
   font-weight:normal;
   background-color: #fff;
@@ -24,12 +24,12 @@ body{
 #wrapper {
   padding:0;
   margin:0;
-  width: 6.5in;
-  height: 10in;
-  margin-top: .5in;
+  width: 7.5in;
+  height: 10.5in;
+  margin-top: .25in;
   margin-left: auto;
   margin-right: auto;
-  border:2px solid #088889;
+  border:2px solid #814fa0;
   /*	border-top:1px solid #000;*/
 }
 
@@ -76,20 +76,21 @@ body{
 }
 
 #title	{
-  font-size: 30pt;
+  font-size: 32pt;
+  font-weight: bold;
   color:#000;
 } /* TITLE   */
 
 #names	{
   font-size: 18pt;
   font-weight: bold;
-  color:#86ada0;
-  line-height: 30pt;
+  color: #814fa0;
+  line-height: 20pt;
 } /* NAMES   */
 #names_sm	{
   font-size: 16pt;
   font-weight: bold;
-  color:#e32f4a;
+  color: #814fa0;
   line-height: 18pt;
 } /* NAMES small   */
 
@@ -107,16 +108,17 @@ body{
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-  font-size: 15pt;
+  font-size: 28pt;
   text-align: center;
 } /* PITCH   */
 
 #class	{
   font-size: 12pt;
+  font-style: italic;
 } /* CLASSES */
 
 #url {
-  color:#088889;
+  color: #814fa0;
   font-size: 14pt;
 } /* URL     */
 
