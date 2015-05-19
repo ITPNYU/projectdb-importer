@@ -24,7 +24,7 @@ body{
 #wrapper {
   padding:0;
   margin:0;
-  width: 7.5in;
+  width: 7.25in;
   height: 10.5in;
   margin-top: .25in;
   margin-left: auto;
@@ -76,7 +76,7 @@ body{
 }
 
 #title	{
-  font-size: 32pt;
+  font-size: 40pt;
   font-weight: bold;
   color:#000;
   max-height: 2.5in;
@@ -105,7 +105,7 @@ body{
   margin-left: auto;
   margin-right: auto;
   max-height: 1.5in;
-  font-size: 28pt;
+  font-size: 22pt;
   text-align: center;
 } /* PITCH   */
 
