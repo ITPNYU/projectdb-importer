@@ -79,6 +79,7 @@ body{
   font-size: 32pt;
   font-weight: bold;
   color:#000;
+  max-height: 2.5in;
 } /* TITLE   */
 
 #names	{
@@ -87,12 +88,6 @@ body{
   color: #814fa0;
   line-height: 20pt;
 } /* NAMES   */
-#names_sm	{
-  font-size: 16pt;
-  font-weight: bold;
-  color: #814fa0;
-  line-height: 18pt;
-} /* NAMES small   */
 
 #projectimg img {
   padding: 5pt;
@@ -100,6 +95,7 @@ body{
 }
 
 #pitch_wrap {
+  max-height: 1.5in;
   width: 100%;
 }
 #pitch	{
@@ -108,6 +104,7 @@ body{
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  max-height: 1.5in;
   font-size: 28pt;
   text-align: center;
 } /* PITCH   */
