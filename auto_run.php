@@ -47,13 +47,8 @@ function projectdb_format_content( $project ) {
     }
   }
 
-  $elevator_pitch = html_entity_decode(
-        utf8_decode( $project['elevator_pitch'] ),
-        NULL, 'UTF-8'
-      );
-
   $post_content = '<h2><em>' . implode( ', ', $students ) . "</em></h2>\n";
-  $post_content .= '<p>' . htmlspecialchars_decode($project['elevator_pitch']) . "</p>\n";
+  $post_content .= '<p>' . $project['elevator_pitch'] . "</p>\n";
   if ( isset( $project['url'] ) && ( $project['url'] != '' ) && ( $project['url'] != 'http://' ) ) {
     $post_content .= '<p><a href="' . $project['url'] . '">' . $project['url']. "</a></p>\n";
   }
@@ -64,8 +59,11 @@ function projectdb_format_content( $project ) {
   if ( isset( $project['description'] ) ) {
     $post_content .= "<h3>Description</h3>\n" . htmlspecialchars_decode( $project['description'] );
   }
-   //echo ("<b>hfhfghf".$project['people'][0]['thesis_video_url']."</b>");
-   //print_r($project['people']);
+
+
+  //echo ("<b>hfhfghf".$project['people']['thesis_video_url']."</b>");
+  //$post_content .= $project['video_url'];
+
   // classes
   $post_content .= "\n<h3>Classes</h3>\n";
   $classes = array();
@@ -73,12 +71,6 @@ function projectdb_format_content( $project ) {
     array_push( $classes, $c['class_name'] );
   }
   $post_content .= implode( ', ', $classes );
-
-  if (!empty($project['people'][0]['thesis_video_url'])){
-  $post_content .= "\n<h3>Thesis Presentation Video</h3>\n{$project['people'][0]['thesis_video_url']}";
-  }
-
-
 
   return $post_content;
 }
@@ -110,6 +102,7 @@ function projectdb_category( $args ) {
 }
 
 function projectdb_post( $project ) {
+  //print_r($project);
 
   $post_id = NULL;
   $instructor_meta = array();
@@ -223,8 +216,8 @@ function projectdb_post( $project ) {
   foreach ( $project['documents'] as $d ) {
     if ( ( $d['main_image'] == true ) && ( $d['secret'] == false ) ) {
       $base = 'http://itp.nyu.edu/projects_documents/';
-      //media_sideload_image( $base . $d['document'], $post_id, $d['document_name'] );
       $att_id = media_sideload_image( $base . $d['document'], $post_id, $d['document_name'],'id' );
+      //add_post_meta($att_id, '_wp_attachment_image_alt', 'MY TEXT');
       update_post_meta( $att_id, '_wp_attachment_image_alt', 'Main Project Image' );
       /*
       $args = array(
@@ -271,4 +264,102 @@ function itpdir_lookup( $args ) {
   return $results;
 }
 
-?>
+
+
+
+set_time_limit( 0 );
+$goodrest = 1;
+
+if ( ob_get_level() == 0 ) ob_start();
+
+if ( get_option( 'projectdb_api_url' ) && get_option( 'projectdb_api_key' ) ) {
+  $projectdb = projectdb_download( array(
+      'url' => get_option( 'projectdb_api_url' ),
+      'key' => get_option( 'projectdb_api_key' ),
+      'venue' => get_option( 'projectdb_venue' )
+    ) );
+
+  $projectdb_count = count( $projectdb['objects'] );
+  if ( $projectdb_count > 0 ) {
+    //print_r($projectdb['objects']);
+    //echo ' retrieved ' . $projectdb_count . ' projects.<br />';
+    $all_posts = get_posts( array( 'numberposts' => -1 ) );
+    $all_posts_id = array();
+    foreach ( $all_posts as $p ) {
+      array_push( $all_posts_id, get_post_meta( $p->ID, 'project_id', TRUE ) );
+    }
+    $all_projects_id = array();
+    foreach ( $projectdb['objects'] as $p ) {
+      array_push( $all_projects_id, $p['project_id'] );
+    }
+    //echo "all_posts_id: ";
+    //echo "<ul>\n";
+    foreach ( $projectdb['objects'] as $p ) {
+      if ( !in_array( $p['project_id'], $all_projects_id ) ) {
+        $posts = get_posts( array( 'numberposts' => 1, 'meta_key' => 'project_id', 'meta_value' => $p['project_id'] ) );
+        if ( count( $posts ) > 0 ) {
+          $attach = get_posts( array( 'post_type' => 'attachment', 'post_parent' => $posts[0]->ID ) );
+          foreach ( $attach as $a ) {
+            $ret = wp_delete_attachment( $a->ID, TRUE );
+            if ( $ret ) {
+              //echo 'attachment deleted: ';
+            }
+            else {
+              //echo 'attachment deletion failure: ';
+            }
+            //echo $posts[0]->ID . ' for project ' . $p['project_id'] . "\n";
+          }
+          $ret = wp_delete_post( $posts[0]->ID, TRUE );
+          if ( $ret ) {
+            //echo 'post deleted: ';
+          }
+          else {
+            //echo 'post deletion failure: ';
+          }
+          //echo $posts[0]->ID . ' for project ' . $p['project_id'] . "<br />\n";
+        }
+      }
+      else {
+        $post_id = projectdb_post( $p );
+        //echo '<li>';
+        if ( is_wp_error( $post_id ) ) {
+          //echo $post_id->get_error_message();
+        }
+        else {
+          //echo $post_id . ': ' . get_post( $post_id )->post_title;
+        }
+
+        $percent = round( $goodrest/$projectdb_count*100 );
+        //echo str_pad( '', 4096 )."\n";
+        // YEN: Quick BUT very Dirty!!!
+    //     echo '<script language="javascript">
+    // document.getElementById("progress").innerHTML="<div style=\"width:'.$percent.'%;background-color:#ddd;\">&nbsp;</div>";
+    // document.getElementById("information").innerHTML="'.$goodrest.' project(s) processed. ('.$percent.'%)";
+    // </script>';
+
+        ob_flush();
+        flush();
+
+        //echo "</li>\n";
+
+        if ( $goodrest!=0 && $goodrest%5==0 ) sleep( 1 );
+
+        $goodrest++;
+      }
+
+    }
+    //echo "</ul>\n";
+  }
+  else {
+    //echo 'cannot read projectdb.';
+  }
+  //echo '<br />';
+}
+else {
+  //echo "ProjectDB API URL not set";
+}
+
+//echo '<script language="javascript">document.getElementById("information").innerHTML="Process completed"</script>';
+ob_end_flush();
+
+echo "end";

@@ -32,6 +32,8 @@ function projectdb_setup() {
   add_option('itpdir_api_url');
   add_option('itpdir_api_key');
   add_option('slug_student_name');
+  //Yen: password for feedback
+  add_option('feedback_password');
 }
 
 function projectdb_setting_callback($arg) {
@@ -102,6 +104,14 @@ function projectdb_settings() {
     array('slug_student_name')
   );
 
+  add_settings_field('feedback_password',
+    'Feedback Auth Passcode',
+    'projectdb_setting_callback',
+    'general',
+    'projectdb_section',
+    array('feedback_password')
+  );
+
   register_setting('general', 'projectdb_api_url');
   register_setting('general', 'projectdb_api_key');
   register_setting('general', 'projectdb_venue');
@@ -110,6 +120,7 @@ function projectdb_settings() {
   register_setting('general', 'itpdir_api_key');
 
   register_setting('general', 'slug_student_name');
+  register_setting('general', 'feedback_password');
 }
 
 function projectdb_template_filter() {
@@ -122,6 +133,13 @@ function projectdb_template_filter() {
   }
   else if (is_page('posterlist')) {
     $location = plugin_dir_path(__FILE__) . '/template/' . 'projectdb_posterlist_template.php';
+    if (file_exists($location)) {
+      load_template($location);
+      exit();
+    }
+  }
+  else if (is_page('posterprint_new')) {
+    $location = plugin_dir_path(__FILE__) . '/template/' . 'projectdb_poster_template2.php';
     if (file_exists($location)) {
       load_template($location);
       exit();

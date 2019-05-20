@@ -16,39 +16,13 @@
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style type="text/css" media="print,screen">
-
-body {
-  background: rgb(204,204,204); 
-}
-page {
-  background: white;
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 0.5cm;
-  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
-}
-
-@media print {
-    @page {
-        size: letter;
-        margin: 0.5cm;
-    }
-}
-
-/*@media print {
-  body, page {
-    margin: 0;
-    box-shadow: 0;
-  }
-}
 @page {
-  size: 8.5in 11in;   width height 
+  size: 8.5in 11in;  /* width height */
   margin-left: .25in;
   margin-right: .25in;
   margin-top: .25in;
   margin-bottom: .25in;
-
-}*/
+}
 
 body{
   margin:0;
@@ -59,27 +33,23 @@ body{
   background-color: #fff;
   color: #000;
   text-align: center;
-  position: absolute;
-  height: 100%;
 }
 
 #wrapper {
-  /*padding:0.25in;*/
-
-  margin:0.5in;
+  padding:0;
+  margin:0;
   width: 7.25in;
   /*height: 9.38in;*/
   height: 10.5in;/*margin-top: .25in;;*/
-  margin-top: auto;/*margin-top: .25in;;*/
+  margin-top: 0in;/*margin-top: .25in;;*/
   margin-left: auto;
   margin-right: auto;
   border:2px solid #814fa0;
   /*	border-top:1px solid #000;*/
-  position: relative;
 }
 
 .header1{
-  float:center;
+  float:left;
   width:50%;
   font-size: 30px;
   font-weight: bold;
@@ -89,12 +59,6 @@ body{
   color: #088889;
   margin:0;
   padding: 10px 0px 0px 0px;
-}
-
-#qrcode_img{
-
-  position: relative;
-
 }
 
 #img1 {
@@ -190,7 +154,6 @@ body{
 
 </style>
   </head>
-  <page size="A4">
   <body>
 <?php
 $post_id = null;
@@ -204,10 +167,8 @@ else {
   //setup_postdata($post_id); // check for null/error
 ?>
     <div id="wrapper">
-      <div id="header1" >
-        <h1><? echo get_bloginfo('name'); ?></h1>
-
-       <!--  <img width="696px" src="<? //echo get_header_image(); ?>"> -->
+      <div id="header1">
+        <img width="100%" src="<? echo get_header_image(); ?>">
       </div><!-- #header1 -->
 
       <div id="title">
@@ -269,26 +230,14 @@ if (!preg_match('/^http:\/\/$/', $url)) {
 
       $googer = new GoogleURLAPI();
 
-
 // Test: Shorten a URL
 //google form url
-
-
-$comment_url = get_post_permalink($post_id)."&showfeedback=".get_option('feedback_password')."#respond";
-//echo $comment_url;
-//print_r($post_id);
-$post_url_s = 'https://itp.nyu.edu/shows/spring2019/?p=' . $post_id->ID ;
-//echo $post_url_s;
-
 $google_form_url = "https://docs.google.com/forms/d/1jAqpuM7iMVbf07HWRYmNpyZQkAhj6sc2W65-BYaon8w/viewform?entry.1352385952=".utf8_decode(get_the_title($post_id));
-$shortDWName = $googer->shorten($comment_url);
-//Starting March 30, 2018, we will be turning down support for goo.gl URL shortener. Please see this blog post for detailed timelines and alternatives.
-//print_r($shortDWName);
+$shortDWName = $googer->shorten($google_form_url);
 //echo $shortDWName; // returns http://goo.gl/i002
 
-echo "<img src='https://chart.googleapis.com/chart?cht=qr&chs=120x120&chl=$post_url_s' />";
-//echo $googer->qrcode($comment_url);
-//echo "<br><br>"."<b>Leave feedback on this project</b>";
+//echo "<img src='https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=$shortDWName' />";
+echo $googer->qrcode($shortDWName);
 
 
 
@@ -298,7 +247,6 @@ echo "<img src='https://chart.googleapis.com/chart?cht=qr&chs=120x120&chl=$post_
 
     </div><!-- #wrapper -->
   </body>
-  </page>
 </html>
 
 <?php
@@ -313,12 +261,8 @@ class GoogleUrlApi {
   
   // Shorten a URL
   function shorten($url) {
-
-
     // Send information along
     $response = $this->send($url);
-
-    //print_r($response);
     // Return the result
     return isset($response['id']) ? $response['id'] : false;
   }
@@ -356,8 +300,7 @@ class GoogleUrlApi {
 
   function qrcode($url,$size = 80){
 
-    $img_url = "<div id=\"qrcode_img\" style=\"float: center; position: relative;bottom: -50px; overflow:hidden;\" ><img alt=\"leave a feedback by qr code\" src=\"https://chart.googleapis.com/chart?cht=qr&chs={$size}x{$size}&chl={$url}\" style=\"margin:0;padding:0;\"><p style=\"float: center;margin:0;padding:0;font-size: small;\">$url<p></div>";
-
+    $img_url = "<div style=\"float: right; position: relative;top: -50px; overflow:hidden;\" ><img alt=\"leave a feedback by qr code\" src=\"https://chart.googleapis.com/chart?cht=qr&chs={$size}x{$size}&chl={$url}\" style=\"margin:0;padding:0;\"><br><p style=\"float: right;margin:0;padding:0;font-size: small;\">{$url}<br>Your feedback matters<p></div>";
 
     return $img_url;
 
