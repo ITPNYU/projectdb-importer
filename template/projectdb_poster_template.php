@@ -277,8 +277,9 @@ if (!preg_match('/^http:\/\/$/', $url)) {
 $comment_url = get_post_permalink($post_id)."&showfeedback=".get_option('feedback_password')."#respond";
 //echo $comment_url;
 //print_r($post_id);
-$post_url_s = 'https://itp.nyu.edu/shows/spring2019/?p=' . $post_id->ID ;
-//echo $post_url_s;
+
+$post_url_s = get_site_url() . '/?p=' . $post_id->ID ;
+//echo get_post_permalink();
 
 $google_form_url = "https://docs.google.com/forms/d/1jAqpuM7iMVbf07HWRYmNpyZQkAhj6sc2W65-BYaon8w/viewform?entry.1352385952=".utf8_decode(get_the_title($post_id));
 $shortDWName = $googer->shorten($comment_url);

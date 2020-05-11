@@ -1,59 +1,37 @@
 <?php
 
-function projectdb_download( $args ) {
-  $projectdb = NULL;
-  if ( $args['url'] && $args['key'] ) {
-    $url = $args['url'];
-    if ( preg_match( '/\/$/', $url ) != 1 ) {
-      $url .= '/';
-    }
-    // q={"filters":[{"name":"venues__venue_id","op":"any","val":100}]}
-    $filters = array(
-      'filters' => array(
-        array(
-          'name' => 'venues__venue_id',
-          'op' => 'any',
-          'val' => $args['venue']
-        )
-      )
-    );
+require "projects/projectdbAPI.php";
 
-    $url .= 'project' . '?'
-      . 'q=' . urlencode( json_encode( $filters ) ) . '&'
-      . 'results_per_page=300' . '&'
-      . 'key=' . $args['key'];
+//$projects = projectdb_download(160);
 
-    $results_json = file_get_contents( $url );
-    $results = json_decode( $results_json, TRUE );
-  }
-  return $results;
-}
+//echo var_dump( $projects);
 
-function projectdb_format_content( $project ) {
+// $project =  $projects[1];
+
+// $creators = itpdir_lookup($project['project_id']);
+
+// $classes = getClassInfo($project['class_id']);
+
+// $documents = getDocs($project['document_id']);
+
+// $school = array(1=>"IMA/ITP New York",2=>"IMA/IMB Shanghai",3=>"IM Abu Dhabi");
+
+
+// echo var_dump($project);
+
+function projectdb_format_content( $project, $creators, $classes,  $documents ) {
   $students = array();
-  foreach ( $project['people'] as $p ) {
-    $person = itpdir_lookup( array(
-        'netid' => $p['netid'],
-        'url' => get_option( 'itpdir_api_url' ),
-        'key' => get_option( 'itpdir_api_key' )
-      ) );
-    if ( isset( $person['objects'] ) ) {
-      $person = $person['objects'][0];
-      $name = html_entity_decode(
-        utf8_decode( $person['preferred_firstname'] . ' ' . $person['preferred_lastname'] ),
-        NULL, 'UTF-8'
-      );
-      array_push( $students, $name );
-    }
+  foreach ( $creators as $s ) {
+    $students[] = utf8_encode($s['name']);
   }
 
   $elevator_pitch = html_entity_decode(
-        utf8_decode( $project['elevator_pitch'] ),
-        NULL, 'UTF-8'
-      );
+    utf8_decode( $project['elevator_pitch'] ),
+    NULL, 'UTF-8'
+  );
 
   $post_content = '<h2><em>' . implode( ', ', $students ) . "</em></h2>\n";
-  $post_content .= '<p>' . htmlspecialchars_decode($project['elevator_pitch']) . "</p>\n";
+  $post_content .= '<p>' . htmlspecialchars_decode( $project['elevator_pitch'] ) . "</p>\n";
   if ( isset( $project['url'] ) && ( $project['url'] != '' ) && ( $project['url'] != 'http://' ) ) {
     $post_content .= '<p><a href="' . $project['url'] . '">' . $project['url']. "</a></p>\n";
   }
@@ -64,19 +42,31 @@ function projectdb_format_content( $project ) {
   if ( isset( $project['description'] ) ) {
     $post_content .= "<h3>Description</h3>\n" . htmlspecialchars_decode( $project['description'] );
   }
-   //echo ("<b>hfhfghf".$project['people'][0]['thesis_video_url']."</b>");
-   //print_r($project['people']);
+  //echo ("<b>hfhfghf".$project['people'][0]['thesis_video_url']."</b>");
+  //print_r($project['people']);
   // classes
   $post_content .= "\n<h3>Classes</h3>\n";
-  $classes = array();
-  foreach ( $project['classes'] as $c ) {
-    array_push( $classes, $c['class_name'] );
-  }
-  $post_content .= implode( ', ', $classes );
+  $classes_r = array();
 
-  if (!empty($project['people'][0]['thesis_video_url'])){
-  $post_content .= "\n<h3>Thesis Presentation Video</h3>\n{$project['people'][0]['thesis_video_url']}";
+  if ($classes) {
+
+    foreach ( $classes as $c ) {
+      array_push( $classes_r, $c['class_name'] );
+    }
+
+
   }
+
+
+  $post_content .= implode( ', ', $classes_r );
+
+  if (!empty($project['video'])) {
+    $post_content .= "\n<h3>Presentation Video</h3>\n{$project['video']}";
+  }
+
+  // if (!empty($project['zoom_link'])) {
+  //   $post_content .= "\n<h3>Zoom link</h3>\n{$project['zoom_link']}";
+  // }
 
 
 
@@ -115,6 +105,26 @@ function projectdb_post( $project ) {
   $instructor_meta = array();
   $class_meta = array();
   $student_meta = array();
+  $school = array(1=>"IMA/ITP New York", 2=>"IMA/IMB Shanghai", 3=>"IM Abu Dhabi");
+  $keywords = explode(',', $project['keywords']);
+
+  $creators = itpdir_lookup($project['project_id']);
+
+  if($project['class_id']){
+
+    $classes = getClassInfo($project['class_id']);
+
+  }else {$classes = null;}
+
+  if($project['document_id']){
+
+    $documents = getDocs($project['document_id']);
+
+  }else {$documents = null;}
+
+
+
+
 
   $cat_list = array( projectdb_category( array( 'name' => 'Projects', 'slug' => 'projects' ) ) );
   $existing = get_posts( array(
@@ -126,69 +136,81 @@ function projectdb_post( $project ) {
     //$cat_list = wp_get_post_categories($post_id);
   }
 
-  $class_cat = projectdb_category( array( 'name' => 'Related Classes', 'slug' => 'class' ) );
+  $class_cat = projectdb_category( array( 'name' => 'Classes', 'slug' => 'class' ) );
   $instructor_cat = projectdb_category( array( 'name' => 'Instructor', 'slug' => 'instructor' ) );
-  foreach ( $project['classes'] as $c ) {
-    $cat = projectdb_category( array(
-        'name' => $c['class_name'],
-        'parent' => $class_cat
-      ) );
-    array_push( $cat_list, $cat );
-    array_push( $class_meta, $c['class_name'] );
-    $person = itpdir_lookup( array(
-        'netid' => $c['instructor_id'],
-        'url' => get_option( 'itpdir_api_url' ),
-        'key' => get_option( 'itpdir_api_key' )
-      ) );
-    //Yen: $person['objects'] may be an empty array.
-    //if ( isset( $person['objects'] ) ) {
-    if ( !empty( $person['objects'] ) ) {
-      //var_dump($person);
-      $person = $person['objects'][0];
 
-      $name = $person['preferred_firstname'] . ' ' . $person['preferred_lastname'];
+  foreach ($keywords as $w) {
+
+    array_push( $cat_list, projectdb_category(array( 'name' => $w ) ) );
+    // code...
+  }
+
+  if($classes){
+
+    foreach ( $classes as $c ) {
+      $cat = projectdb_category( array(
+          'name' => $c['class_name'],
+          'parent' => $class_cat
+        ) );
+
+      if($c['refno']){
+
+        array_push( $cat_list, projectdb_category(array( 'name' => $school[$c['refno']] ) ) );
+
+      }
+
+      array_push( $cat_list, $cat );
+      array_push( $class_meta, $c['class_name']."|".$c['course_id'] );
+
+      $name = explode(",", $c['instructor']);
+
+      $name = trim($name[1]) . ' ' . trim($name[0]);
+
       $cat = projectdb_category( array(
           'name' => $name,
           'parent' => $instructor_cat
         ) );
+
+
+      // array_push( $cat_list, projectdb_category( array( 'name' => $school[$c['refno']] ) ));
       array_push( $cat_list, $cat );
       array_push( $instructor_meta, $name );
+
     }
+
+
+
   }
+
+
 
   $student_cat = projectdb_category( array(
       'name' => 'Student',
       'slug' => 'student'
     ) );
-  foreach ( $project['people'] as $p ) {
-    $person = itpdir_lookup( array(
-        'netid' => $p['netid'],
-        'url' => get_option( 'itpdir_api_url' ),
-        'key' => get_option( 'itpdir_api_key' )
+  foreach ( $creators as $p ) {
+
+    $name = $p['name'];
+    $cat = projectdb_category( array(
+        'name' => $name,
+        'parent' => $student_cat
       ) );
-    if ( isset( $person['objects'] ) ) {
-      $person = $person['objects'][0];
-      $name = $person['preferred_firstname'] . ' ' . $person['preferred_lastname'];
-      $cat = projectdb_category( array(
-          'name' => $name,
-          'parent' => $student_cat
-        ) );
-      array_push( $cat_list, $cat );
-      array_push( $student_meta, $name );
-    }
+    array_push( $cat_list, $cat );
+    array_push( $student_meta, $name );
+
   }
 
   $post_args = array(
     'post_title' => $project['project_name'],
     'post_status' => 'publish',
-    'post_content' => projectdb_format_content( $project ),
+    'post_content' => projectdb_format_content( $project, $creators, $classes,  $documents ),
     'post_category' => $cat_list
   );
 
-  $slug_student_name = get_option( 'slug_student_name' );
-  if ( $slug_student_name === '1' ) {
-    $post_args['post_name'] = sanitize_title( $person['preferred_firstname'] . ' ' . $person['preferred_lastname'] );
-  }
+  // $slug_student_name = get_option( 'slug_student_name' );
+  // if ( $slug_student_name === '1' ) {
+  //   $post_args['post_name'] = sanitize_title( $person['preferred_firstname'] . ' ' . $person['preferred_lastname'] );
+  // }
 
   if ( isset( $post_id ) ) {
     $post_args['ID'] = $post_id;
@@ -212,21 +234,29 @@ function projectdb_post( $project ) {
     $post_id = wp_insert_post( $post_args );
   }
 
-  foreach ( array( 'audience', 'background', 'conclusion', 'personal_statement', 'elevator_pitch', 'user_scenario', 'project_name', 'project_id', 'url' ) as $meta ) {
+  foreach ( array( 'project_id','project_name','elevator_pitch','description','url','keywords','video','zoom_link','class_id','document_id','user_id' ) as $meta ) {
     update_post_meta( $post_id, $meta, $project[$meta] );
   }
   update_post_meta( $post_id, 'student', implode( ', ', $student_meta ) );
   update_post_meta( $post_id, 'instructor', implode( ', ', $instructor_meta ) );
   update_post_meta( $post_id, 'class', implode( ', ', $class_meta ) );
 
+  $vslideshow_num = 0;
   // pull in the image
-  foreach ( $project['documents'] as $d ) {
-    if ( ( $d['main_image'] == true ) && ( $d['secret'] == false ) ) {
-      $base = 'http://itp.nyu.edu/projects_documents/';
-      //media_sideload_image( $base . $d['document'], $post_id, $d['document_name'] );
-      $att_id = media_sideload_image( $base . $d['document'], $post_id, $d['document_name'],'id' );
-      update_post_meta( $att_id, '_wp_attachment_image_alt', 'Main Project Image' );
-      /*
+
+  if($documents){
+
+    foreach ( $documents as $d ) {
+
+      //$vslideshow_num = 0;
+
+      if ( ( $d['main_image'] == true ) ) {
+        $base = 'https://itp.nyu.edu/projects_documents/';
+        //media_sideload_image( $base . $d['document'], $post_id, $d['document_name'] );
+        $att_id = media_sideload_image( $base . $d['document'], $post_id, 'main_image','id' );
+        update_post_meta( $att_id, '_wp_attachment_image_alt', $d['alt_text'] );
+        // update_post_meta($post_id, '_thumbnail_id', $att_id);
+        /*
       $args = array(
         'post_type' => 'attachment',
         'numberposts' => 1,
@@ -238,37 +268,37 @@ function projectdb_post( $project ) {
         // if you want to set featured image, this is how:
         update_post_meta($post_id, '_thumbnail_id', $attachments[0]->ID);
       }*/
+      }
+
+      if ( ( $d['vslideshow'] == true ) ) {
+        $base = 'https://itp.nyu.edu/projects_documents/';
+        //media_sideload_image( $base . $d['document'], $post_id, $d['document_name'] );
+        $att_id = media_sideload_image( $base . $d['document'], $post_id, 'slideshow_'.$vslideshow_num ,'id' );
+        update_post_meta( $att_id, '_wp_attachment_image_alt', $d['alt_text'] );
+
+        $vslideshow_num = $vslideshow_num + 1;
+
+        //echo $vslideshow_num;
+
+      }
+
+      //usleep(500000);
+
     }
+
+
   }
+
 
   return $post_id;
 }
 
-function itpdir_lookup( $args ) {
-  $results = NULL;
-  if ( isset( $args['netid'] ) ) {
-    $url = $args['url'];
-    if ( preg_match( '/\/$/', $url ) != 1 ) {
-      $url .= '/';
+add_action( 'before_delete_post', function( $id ) {
+    $attachments = get_attached_media( '', $id );
+    foreach ($attachments as $attachment) {
+      wp_delete_attachment( $attachment->ID, 'true' );
     }
-    $filters = array(
-      'filters' => array(
-        array(
-          'name' => 'netid',
-          'op' => 'eq',
-          'val' => $args['netid']
-        )
-      )
-    );
-    $url .= 'person' . '?'
-      . 'q=' . urlencode( json_encode( $filters ) ) . '&'
-      . 'results_per_page=300' . '&'
-      . 'key=' . $args['key'];
+  } );
 
-    $results_json = file_get_contents( $url );
-    $results = json_decode( $results_json, TRUE );
-  }
-  return $results;
-}
 
 ?>

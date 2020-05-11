@@ -11,14 +11,9 @@ $goodrest = 1;
 
 if ( ob_get_level() == 0 ) ob_start();
 
-if ( get_option( 'projectdb_api_url' ) && get_option( 'projectdb_api_key' ) ) {
-  $projectdb = projectdb_download( array(
-      'url' => get_option( 'projectdb_api_url' ),
-      'key' => get_option( 'projectdb_api_key' ),
-      'venue' => get_option( 'projectdb_venue' )
-    ) );
+  $projectdb = projectdb_download( get_option( 'projectdb_venue' ) );
 
-  $projectdb_count = count( $projectdb['objects'] );
+  $projectdb_count = count( $projectdb );
   //print_r(json_encode($projectdb['objects'][0]));
   if ( $projectdb_count > 0 ) {
     echo ' retrieved ' . $projectdb_count . ' projects.<br />';
@@ -28,12 +23,14 @@ if ( get_option( 'projectdb_api_url' ) && get_option( 'projectdb_api_key' ) ) {
       array_push( $all_posts_id, get_post_meta( $p->ID, 'project_id', TRUE ) );
     }
     $all_projects_id = array();
-    foreach ( $projectdb['objects'] as $p ) {
+    foreach ( $projectdb as $p ) {
       array_push( $all_projects_id, $p['project_id'] );
     }
+
+    //echo var_dump($projectdb);
     echo "all_posts_id: ";
     echo "<ul>\n";
-    foreach ( $projectdb['objects'] as $p ) {
+    foreach ( $projectdb as $p ) {
       if ( !in_array( $p['project_id'], $all_projects_id ) ) {
         $posts = get_posts( array( 'numberposts' => 1, 'meta_key' => 'project_id', 'meta_value' => $p['project_id'] ) );
         if ( count( $posts ) > 0 ) {
@@ -65,6 +62,7 @@ if ( get_option( 'projectdb_api_url' ) && get_option( 'projectdb_api_key' ) ) {
           echo $post_id->get_error_message();
         }
         else {
+          //echo var_dump($post_id);
           echo $post_id . ': ' . get_post( $post_id )->post_title;
         }
 
@@ -93,10 +91,7 @@ if ( get_option( 'projectdb_api_url' ) && get_option( 'projectdb_api_key' ) ) {
     echo 'cannot read projectdb.';
   }
   echo '<br />';
-}
-else {
-  echo "ProjectDB API URL not set";
-}
+
 
 echo '<script language="javascript">document.getElementById("information").innerHTML="Process completed"</script>';
 ob_end_flush();
