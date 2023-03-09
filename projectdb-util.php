@@ -1,6 +1,6 @@
 <?php
 
-require "projects/projectdbAPI.php";
+require "projectdbAPI.php";
 
 //$projects = projectdb_download(160);
 
@@ -20,6 +20,11 @@ require "projects/projectdbAPI.php";
 // echo var_dump($project);
 
 function projectdb_format_content( $project, $creators, $classes,  $documents ) {
+
+  //$school = array(1=>"IMA/ITP New York", 2=>"IMA/IMB Shanghai", 3=>"IM Abu Dhabi");
+  
+  //echo exit(var_dump($project));
+
   $students = array();
   foreach ( $creators as $s ) {
     $students[] = utf8_encode($s['name']);
@@ -30,45 +35,62 @@ function projectdb_format_content( $project, $creators, $classes,  $documents ) 
     NULL, 'UTF-8'
   );
 
-  $post_content = '<h2><em>' . implode( ', ', $students ) . "</em></h2>\n";
-  $post_content .= '<p>' . htmlspecialchars_decode( $project['elevator_pitch'] ) . "</p>\n";
-  if ( isset( $project['url'] ) && ( $project['url'] != '' ) && ( $project['url'] != 'http://' ) ) {
-    $post_content .= '<p><a href="' . $project['url'] . '">' . $project['url']. "</a></p>\n";
-  }
+  //heading
+  $post_content = '<p id="project-pitch">' . htmlspecialchars_decode( $project['elevator_pitch'] ) . "</p>";
+  $post_content .= '<h2 id="project-students">' . implode( ', ', $students ) . "</h2>\n";
 
   // image here
   $post_content .= "[gallery size=\"medium\" columns=\"0\" link=\"file\"]\n";
 
-  if ( isset( $project['description'] ) ) {
-    $post_content .= "<h3>Description</h3>\n" . htmlspecialchars_decode( $project['description'] );
+  // video
+  if (!empty($project['video'])) {
+    $post_content .= '<div id="project-video">' . $project['video'] . '</div>';
   }
+
+  //description
+  $post_content .= '<div id="project-description">';
+  if ( isset( $project['description'] ) ) {
+    $post_content .= '<h3>Description</h3>' . htmlspecialchars_decode( $project['description']);
+  }
+  if ( isset( $project['url'] ) && ( $project['url'] != '' ) && ( $project['url'] != 'http://' ) ) {
+    $post_content .= '<div id="project-link"><a target="_blank" href="' . $project['url'] . '">' . 'Learn More'. "</a></div>";
+  }
+  $post_content .= '</div>';
+
+  //school
+  $school = array(1=>"IMA/ITP New York", 2=>"IMA/IMB Shanghai", 3=>"IM Abu Dhabi");
+  //$post_content .= '<div id="project-school">' . $school[$classes[0]['refno']] . '</div>';
+
   //echo ("<b>hfhfghf".$project['people'][0]['thesis_video_url']."</b>");
   //print_r($project['people']);
   // classes
-  $post_content .= "\n<h3>Classes</h3>\n";
-  $classes_r = array();
-
+  $post_content .= '<div id="project-course-ids">';
+  $classes_r1 = array();
   if ($classes) {
+    foreach ( $classes as $c ) {
+      array_push( $classes_r1, $c['course_id']);
+    }
+  }
+  $post_content .= implode( ', ', $classes_r1 );
+  $post_content .= '</div>';
 
+
+  $post_content .= '<div id="project-classes">';
+  $classes_r = array();
+  if ($classes) {
     foreach ( $classes as $c ) {
       array_push( $classes_r, $c['class_name'] );
     }
-
-
   }
-
-
   $post_content .= implode( ', ', $classes_r );
+  $post_content .= '</div>';
 
-  if (!empty($project['video'])) {
-    $post_content .= "\n<h3>Presentation Video</h3>\n{$project['video']}";
-  }
+  //keywords
+  $post_content .= '<div id="project-keywords">' . $project['keywords'] . '</div>';
 
   // if (!empty($project['zoom_link'])) {
   //   $post_content .= "\n<h3>Zoom link</h3>\n{$project['zoom_link']}";
   // }
-
-
 
   return $post_content;
 }
@@ -120,7 +142,7 @@ function projectdb_post( $project ) {
 
     $documents = getDocs($project['document_id']);
 
-  }else {$documents = null;}
+  } else {$documents = null;}
 
 
 
@@ -145,6 +167,8 @@ function projectdb_post( $project ) {
     // code...
   }
 
+  $school_meta = array();
+
   if($classes){
 
     foreach ( $classes as $c ) {
@@ -156,6 +180,7 @@ function projectdb_post( $project ) {
       if($c['refno']){
 
         array_push( $cat_list, projectdb_category(array( 'name' => $school[$c['refno']] ) ) );
+        array_push( $school_meta, $school[$c['refno']] );
 
       }
 
@@ -231,7 +256,9 @@ function projectdb_post( $project ) {
     wp_update_post( $post_args );
   }
   else {
-    $post_id = wp_insert_post( $post_args );
+	var_dump($post_args);
+    $post_id = wp_insert_post( $post_args, true);
+	var_dump($post_id);
   }
 
   foreach ( array( 'project_id','project_name','elevator_pitch','description','url','keywords','video','zoom_link','class_id','document_id','user_id' ) as $meta ) {
@@ -240,6 +267,7 @@ function projectdb_post( $project ) {
   update_post_meta( $post_id, 'student', implode( ', ', $student_meta ) );
   update_post_meta( $post_id, 'instructor', implode( ', ', $instructor_meta ) );
   update_post_meta( $post_id, 'class', implode( ', ', $class_meta ) );
+  update_post_meta( $post_id, 'school', implode( ', ', $school_meta ) );
 
   $vslideshow_num = 0;
   // pull in the image

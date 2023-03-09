@@ -3,8 +3,8 @@
 <div id="information" style="width"></div>
 
 <?php
-//error_reporting( E_ALL );
-//ini_set( 'display_errors', '1' );
+error_reporting( E_ALL );
+ini_set( 'display_errors', '1' );
 // YEN: or timeout!
 set_time_limit( 0 );
 $goodrest = 1;
@@ -63,7 +63,7 @@ if ( ob_get_level() == 0 ) ob_start();
         }
         else {
           //echo var_dump($post_id);
-          echo $post_id . ': ' . get_post( $post_id )->post_title;
+          echo $post_id . ': ' . get_post( $post_id )->post_title . ' projectdb: ' . $p['project_id'];
         }
 
         $percent = round( $goodrest/$projectdb_count*100 );

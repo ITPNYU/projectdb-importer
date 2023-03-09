@@ -8,8 +8,9 @@
  * Author URI: http://itp.nyu.edu
  * License: GPLv3
  */
-
+//require '/web/include/projects/projectdbAPI.php';
 require 'projectdb-util.php';
+//require '/web/include/projects/projectdbAPI.php';
 
 register_activation_hook( __FILE__, 'projectdb_setup');
 add_action('admin_init', 'projectdb_settings');

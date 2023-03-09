@@ -29,51 +29,51 @@ function projectdb_download( $args ) {
   return $results;
 }
 
-function projectdb_format_content( $project ) {
-  $students = array();
-  foreach ( $project['people'] as $p ) {
-    $person = itpdir_lookup( array(
-        'netid' => $p['netid'],
-        'url' => get_option( 'itpdir_api_url' ),
-        'key' => get_option( 'itpdir_api_key' )
-      ) );
-    if ( isset( $person['objects'] ) ) {
-      $person = $person['objects'][0];
-      $name = html_entity_decode(
-        utf8_decode( $person['preferred_firstname'] . ' ' . $person['preferred_lastname'] ),
-        NULL, 'UTF-8'
-      );
-      array_push( $students, $name );
-    }
-  }
+// function projectdb_format_content( $project ) {
+//   $students = array();
+//   foreach ( $project['people'] as $p ) {
+//     $person = itpdir_lookup( array(
+//         'netid' => $p['netid'],
+//         'url' => get_option( 'itpdir_api_url' ),
+//         'key' => get_option( 'itpdir_api_key' )
+//       ) );
+//     if ( isset( $person['objects'] ) ) {
+//       $person = $person['objects'][0];
+//       $name = html_entity_decode(
+//         utf8_decode( $person['preferred_firstname'] . ' ' . $person['preferred_lastname'] ),
+//         NULL, 'UTF-8'
+//       );
+//       array_push( $students, $name );
+//     }
+//   }
 
-  $post_content = '<h2><em>' . implode( ', ', $students ) . "</em></h2>\n";
-  $post_content .= '<p>' . $project['elevator_pitch'] . "</p>\n";
-  if ( isset( $project['url'] ) && ( $project['url'] != '' ) && ( $project['url'] != 'http://' ) ) {
-    $post_content .= '<p><a href="' . $project['url'] . '">' . $project['url']. "</a></p>\n";
-  }
+//   $post_content = '<h2><em>' . implode( ', ', $students ) . "</em></h2>\n";
+//   $post_content .= '<p>' . $project['elevator_pitch'] . "</p>\n";
+//   if ( isset( $project['url'] ) && ( $project['url'] != '' ) && ( $project['url'] != 'http://' ) ) {
+//     $post_content .= '<p><a href="' . $project['url'] . '">' . $project['url']. "</a></p>\n";
+//   }
 
-  // image here
-  $post_content .= "[gallery size=\"medium\" columns=\"0\" link=\"file\"]\n";
+//   // image here
+//   $post_content .= "[gallery size=\"medium\" columns=\"0\" link=\"file\"]\n";
 
-  if ( isset( $project['description'] ) ) {
-    $post_content .= "<h3>Description</h3>\n" . htmlspecialchars_decode( $project['description'] );
-  }
+//   if ( isset( $project['description'] ) ) {
+//     $post_content .= "<h3>Description</h3>\n" . htmlspecialchars_decode( $project['description'] );
+//   }
 
 
-  //echo ("<b>hfhfghf".$project['people']['thesis_video_url']."</b>");
-  //$post_content .= $project['video_url'];
+//   //echo ("<b>hfhfghf".$project['people']['thesis_video_url']."</b>");
+//   //$post_content .= $project['video_url'];
 
-  // classes
-  $post_content .= "\n<h3>Classes</h3>\n";
-  $classes = array();
-  foreach ( $project['classes'] as $c ) {
-    array_push( $classes, $c['class_name'] );
-  }
-  $post_content .= implode( ', ', $classes );
+//   // classes
+//   $post_content .= "\n<h3>Classes</h3>\n";
+//   $classes = array();
+//   foreach ( $project['classes'] as $c ) {
+//     array_push( $classes, $c['class_name'] );
+//   }
+//   $post_content .= implode( ', ', $classes );
 
-  return $post_content;
-}
+//   return $post_content;
+// }
 
 function projectdb_category( $args ) {
   $projectdb_cat_id = NULL;
